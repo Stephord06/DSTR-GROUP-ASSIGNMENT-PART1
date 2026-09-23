@@ -1,4 +1,5 @@
-#include "general-tools/datasets-implementation.cpp"
+#include "general-tools\datasets-implementation-array.hpp"
+#include "general-tools/datasets-implementation-singly-linked-list.hpp"
 #include <iostream>
 #include <vector>
 
@@ -7,14 +8,14 @@ using namespace std;
 int main()
 {
     int selection = -1;
-    vector<record> myRecords;
-    dataLoading(myRecords);
+    arrayDataset dataset;
+    dataLoadingArray(dataset);
 
     do
     {
         cout << "\nWelcome to XXX Data System" << endl;
         cout << "Functions Provided: " << endl;
-        cout << "[1] Display all implemented data from datasets" << endl;
+        cout << "[1] Display all data with array" << endl;
         cout << "[2] Sorting with Array" << endl;
         cout << "[0] Exit the System" << endl;
         cout << "\nInsert a number to select a function to execute: ";
@@ -25,7 +26,8 @@ int main()
         {
         case 1:
         {
-            printAllRecords(myRecords);
+            dataLoadingArray(dataset);
+            printAllRecords(dataset);
             break;
         }
             // The further switches......

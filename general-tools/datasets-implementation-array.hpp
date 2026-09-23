@@ -1,7 +1,6 @@
 #include <sstream>
 #include <fstream>
 #include <string>
-#include <vector>
 #include <iostream>
 #include <iomanip>
 
@@ -13,9 +12,16 @@ struct record
     int age, lengthOfStay, baseCostPerHour, daysVisitsPerYear;
 };
 
-void dataLoading(vector<record> &records)
+struct arrayDataset {
+    record data[1000];
+    int size = 0;
+    void clear() {size = 0;}
+};
+
+void dataLoadingArray(arrayDataset &dataset)
 {
-    records.clear();
+    dataset.clear();
+    
     cout << "Entered Data Loading Methodology" << endl;
 
     // File Path Reading:
@@ -73,6 +79,10 @@ void dataLoading(vector<record> &records)
                 }
                 try
                 {
+                    if (dataset.size >= 1000){
+                        cout << "[!] Warning: Array Capacity limit (1000) reached......" << endl;
+                    }
+
                     record r;
                     r.patientID = patientField;
                     r.age = stoi(ageField);
@@ -80,7 +90,7 @@ void dataLoading(vector<record> &records)
                     r.lengthOfStay = stoi(lengthField);
                     r.baseCostPerHour = stoi(baseField);
                     r.daysVisitsPerYear = stoi(dayField);
-                    records.push_back(r);
+                    dataset.data[dataset.size++] = r;
                 }
                 catch (...)
                 {
@@ -90,9 +100,9 @@ void dataLoading(vector<record> &records)
     }
 }
 
-void printAllRecords(const vector<record> &records)
+void printAllRecords(const arrayDataset &dataset)
 {
-    cout << "Load Total Valid Records: " << records.size() << "\n"
+    cout << "Load Total Valid Records: " << dataset.size << "\n"
          << endl;
 
     cout << string(100, '=') << endl;
@@ -105,8 +115,9 @@ void printAllRecords(const vector<record> &records)
          << endl;
     cout << string(100, '=') << endl;
 
-    for (const auto &r : records)
+    for (int i = 0; i < dataset.size; ++i)
     {
+        const auto &r = dataset.data[i];
         cout << left << setw(10) << r.patientID << " | "
              << left << setw(4) << r.age << " | "
              << left << setw(16) << r.careType << " | "
