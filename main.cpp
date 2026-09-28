@@ -1,7 +1,6 @@
-#include "general-tools\datasets-implementation-array.hpp"
-#include "general-tools/datasets-implementation-singly-linked-list.hpp"
+#include "general-tools/datasets-implementation-array.hpp"
+#include "Array sorting and searching/sortArrayByMedicalCost.hpp"
 #include <iostream>
-#include <vector>
 
 using namespace std;
 
@@ -9,7 +8,6 @@ int main()
 {
     int selection = -1;
     arrayDataset dataset;
-    dataLoadingArray(dataset);
 
     do
     {
@@ -24,23 +22,28 @@ int main()
 
         switch (selection)
         {
-        case 1:
-        {
-            dataLoadingArray(dataset);
-            printAllRecords(dataset);
-            break;
-        }
-            // The further switches......
-
-        case 0:
-        {
-            cout << "Bye Bye" << endl;
-            break;
-        }
-        default:
-        {
-            cout << "[!] Execution Error......\nPlease Enter a Valid Number......";
-        }
+            case 2:
+            {
+                medicalCostDataset costDataset = addMedicalCost();
+                printAllAddedRecords(costDataset);
+                break;
+            }
+            case 1:
+            {
+                dataLoadingArray(dataset);
+                printAllRecords(dataset);
+                break;
+            }
+            case 0:
+            {
+                cout << "Bye Bye" << endl;
+                break;
+            }
+            default:
+            {
+                cout << "[!] Execution Error......\nPlease Enter a Valid Number......" << endl;
+                break;
+            }
         }
     } while (selection != 0);
 
