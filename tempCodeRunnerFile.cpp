@@ -1,7 +1,6 @@
 #include "general-tools\datasets-implementation-array.hpp"
 #include "general-tools/datasets-implementation-singly-linked-list.hpp"
 #include <iostream>
-#include <vector>
 
 using namespace std;
 
