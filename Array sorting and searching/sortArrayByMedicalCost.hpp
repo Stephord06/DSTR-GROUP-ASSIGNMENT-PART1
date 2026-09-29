@@ -22,4 +22,6 @@ struct medicalCostDataset
 };
 
 medicalCostDataset addMedicalCost();
-void printAllAddedRecords(const medicalCostDataset newdataset);
+void printAllAddedRecords(const medicalCostDataset& newdataset);
+
+medicalCostDataset bubbleSort(medicalCostDataset& arr);

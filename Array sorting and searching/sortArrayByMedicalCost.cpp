@@ -29,7 +29,7 @@ medicalCostDataset addMedicalCost()
     return calculatedDataset;
 }
 
-void printAllAddedRecords(const medicalCostDataset newdataset)
+void printAllAddedRecords(const medicalCostDataset &newdataset)
 {
     cout << "Load Total Valid Records: " << newdataset.size << "\n" << endl;
 
@@ -56,4 +56,24 @@ void printAllAddedRecords(const medicalCostDataset newdataset)
              << left << setw(18) << r.medicalCost << " | "
              << endl;
     }
+}
+
+medicalCostDataset bubbleSort(medicalCostDataset& arr){
+    int n = arr.size;
+    bool swapped;
+
+    for(int i=0 ; i<n-1; i++){
+        swapped=false;
+        for(int c = 0; c < n-i-1; c++){
+            if(arr.data[c].medicalCost > arr.data[c + 1].medicalCost) {
+                swap(arr.data[c],arr.data[c+1]);
+                swapped = true;
+            }
+        }
+        if(swapped == false){
+            break;
+        }
+    }
+
+    return arr;
 }
