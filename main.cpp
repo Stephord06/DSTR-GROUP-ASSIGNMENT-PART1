@@ -1,7 +1,7 @@
 #include "general-tools/datasets-implementation-array.hpp"
 #include "Array sorting and searching/sortArrayByMedicalCost.hpp"
+#include "Array sorting and searching/searchArray.hpp"
 #include <iostream>
-
 #include <chrono>
 
 using namespace std::chrono;
@@ -10,6 +10,13 @@ int main()
 {
     int selection = -1;
     arrayDataset dataset;
+
+    //global variable for array bubble sort and linear search
+
+    medicalCostDataset costDataset;
+    medicalCostDataset bubbleSortData;
+    int choice ;
+    
 
     do
     {
@@ -27,11 +34,11 @@ int main()
         {
             case 3:
             {
-                medicalCostDataset costDataset = addMedicalCost();
+                costDataset = addMedicalCost();
 
                 //calculate execution time start point;
                 auto start = std::chrono::high_resolution_clock::now();
-                medicalCostDataset bubbleSortData = bubbleSort(costDataset);
+                bubbleSortData = bubbleSort(costDataset);
                 //calculate execution time end point;
                 auto end = chrono::high_resolution_clock::now();
                 //calculate duration between end&start;
@@ -39,18 +46,32 @@ int main()
                 printAllAddedRecords(bubbleSortData);
                 cout << "Bubble Sorting Algorithm execution time: " << duration.count() << "ms" << endl; 
                 cout << "Dataset Sorted!!!" << endl;
+                
+                cout << "Enter any for Exit or  Enter 2 Search Data" << endl;
+                cin >> choice;
+                if (choice == 2)
+                {
+                    receiveResponse(bubbleSortData);
+                    break;
+                }
+
+                else{
+                    break;
+                }
                 break;
             }
             case 2:
             {
                 auto start = std::chrono::high_resolution_clock::now();
-                medicalCostDataset costDataset = addMedicalCost();
+                costDataset = addMedicalCost();
                 auto end = chrono::high_resolution_clock::now();
-                auto duration = chrono::duration_cast<chrono::milliseconds>(end-start);
+                auto duration = chrono::duration<double,std::milli>(end-start);
                 printAllAddedRecords(costDataset);
-                cout << "No sorting Array execution time: " << duration.count() << "ms" << endl; 
-                break;
-            }
+                cout << "execution time: " << duration.count() << "ms" << endl; 
+
+                
+                break;  
+            }      
             case 1:
             {
                 dataLoadingArray(dataset);

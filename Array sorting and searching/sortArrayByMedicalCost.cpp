@@ -2,8 +2,9 @@
 #include "../general-tools/datasets-implementation-array.hpp" 
 #include <iostream>
 #include <iomanip>
+#include <chrono>
 
-using namespace std;
+using namespace std::chrono;
 
 medicalCostDataset addMedicalCost()
 {
@@ -29,7 +30,37 @@ medicalCostDataset addMedicalCost()
     return calculatedDataset;
 }
 
-void printAllAddedRecords(const medicalCostDataset &newdataset)
+void printAllAddedRecords(const medicalCostDataset& newdataset, const double& exeTime)
+{
+    cout << "Load Total Valid Records: " << newdataset.size << "\n" << endl;
+
+    cout << string(100, '=') << endl;
+    cout << left << setw(10) << "PatientID" << " | "
+         << left << setw(4) << "Age" << " | "
+         << left << setw(16) << "CareType" << " | "
+         << left << setw(12) << "LengthOfStay" << " | "
+         << left << setw(16) << "BaseCostPerHour" << " | "
+         << left << setw(18) << "DaysVisitsPerYear" << " | "
+         << left << setw(18) << "TotalmedicalCost" << " | "
+         << endl;
+    cout << string(100, '=') << endl;
+
+    for (int i = 0; i < newdataset.size; ++i)
+    {
+        const auto &r = newdataset.data[i];
+        cout << left << setw(10) << r.patientID << " | "
+             << left << setw(4) << r.age << " | "
+             << left << setw(16) << r.careType << " | "
+             << left << setw(12) << r.lengthOfStay << " | "
+             << left << setw(16) << r.baseCostPerHour << " | "
+             << left << setw(18) << r.daysVisitsPerYear << " | "
+             << left << setw(18) << r.medicalCost << " | "
+             << endl;
+    }
+    cout << " execution time: " << exeTime << " nanoseconds" << endl; 
+}
+
+void printAllAddedRecords(const medicalCostDataset& newdataset)
 {
     cout << "Load Total Valid Records: " << newdataset.size << "\n" << endl;
 
