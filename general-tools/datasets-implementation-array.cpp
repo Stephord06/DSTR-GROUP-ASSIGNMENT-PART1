@@ -9,7 +9,7 @@ using namespace std;
 void dataLoadingArray(arrayDataset &dataset)
 {
     dataset.clear();
-    
+
     cout << "Entered Data Loading Methodology" << endl;
 
     string filePath[3] = {
@@ -63,8 +63,9 @@ void dataLoadingArray(arrayDataset &dataset)
                 }
                 try
                 {
-                    if (dataset.size >= 3000){
-                        cout << "[!] Warning: Array Capacity limit (3000) reached......" << endl;
+                    if (dataset.size >= 1000)
+                    {
+                        cout << "[!] Warning: Array Capacity limit (1000) reached......" << endl;
                         break;
                     }
 
@@ -94,7 +95,8 @@ arrayDataset returnDataset()
 
 void printAllRecords(const arrayDataset &dataset)
 {
-    cout << "Load Total Valid Records: " << dataset.size << "\n" << endl;
+    cout << "Load Total Valid Records: " << dataset.size << "\n"
+         << endl;
 
     cout << string(100, '=') << endl;
     cout << left << setw(10) << "PatientID" << " | "

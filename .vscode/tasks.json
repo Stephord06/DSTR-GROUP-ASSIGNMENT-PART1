@@ -12,6 +12,7 @@
                 "${workspaceFolder}/general-tools/datasets-implementation-array.cpp",
                 "${workspaceFolder}/Array sorting and searching/sortArrayByMedicalCost.cpp",
                 "${workspaceFolder}/Array sorting and searching/searchArray.cpp",
+                "${workspaceFolder}/Array sorting and searching/sortArrayByAge.cpp",
                 "-o",
                 "${workspaceFolder}/main.exe"
             ],
