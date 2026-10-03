@@ -67,9 +67,9 @@ int main()
             // calculate execution time end point;
             auto end = chrono::high_resolution_clock::now();
             // calculate duration between end&start;
-            auto duration = chrono::duration_cast<chrono::milliseconds>(end - start);
+            auto duration = chrono::duration<double, std::micro>(end - start);
             printAllAddedRecords(bubbleSortData);
-            cout << "Bubble Sorting Algorithm execution time: " << duration.count() << "ms" << endl;
+            cout << "Bubble Sorting Algorithm execution time: " << duration.count() << " us" << endl;
             cout << "Dataset Sorted!!!" << endl;
 
             cout << "Enter any for Exit or  Enter 2 Search Data" << endl;
@@ -92,9 +92,9 @@ int main()
             auto start = std::chrono::high_resolution_clock::now();
             costDataset = addMedicalCost();
             auto end = chrono::high_resolution_clock::now();
-            auto duration = chrono::duration<double, std::milli>(end - start);
+            auto duration = chrono::duration<double, std::micro>(end - start);
             printAllAddedRecords(costDataset);
-            cout << "execution time: " << duration.count() << "ms" << endl;
+            cout << "execution time: " << duration.count() << " us" << endl;
 
             break;
         }

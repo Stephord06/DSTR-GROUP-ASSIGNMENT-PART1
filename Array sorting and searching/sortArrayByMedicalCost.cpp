@@ -57,7 +57,7 @@ void printAllAddedRecords(const medicalCostDataset& newdataset, const double& ex
              << left << setw(18) << r.medicalCost << " | "
              << endl;
     }
-    cout << " execution time: " << exeTime << " nanoseconds" << endl; 
+    cout << " execution time: " << exeTime << " microseconds" << endl; 
 }
 
 void printAllAddedRecords(const medicalCostDataset& newdataset)
