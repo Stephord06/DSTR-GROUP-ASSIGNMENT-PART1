@@ -92,7 +92,27 @@ struct LinkedList {
       }
     }
   }
-}
 
-;
+  void delete_by_id(int id) {
+    Node *temp = first_node;
+    Node *after_temp = first_node;
+    while (temp->next) {
+      if (after_temp->patientID == id) {
+        if (after_temp == first_node) {
+          first_node = first_node->next;
+
+        } else {
+          temp->next = after_temp->next;
+        }
+        free(after_temp);
+        return;
+      }
+      if (after_temp != first_node) {
+        temp = temp->next;
+      }
+      after_temp = temp->next;
+    }
+    throw invalid_argument("invalid ID.");
+  }
+};
 
