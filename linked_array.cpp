@@ -13,7 +13,6 @@ struct Node {
 
   string display() { return format("[{}, {}]", patientID, name); }
 };
-
 struct LinkedList {
   int length;
   Node *first_node;
@@ -66,7 +65,7 @@ struct LinkedList {
 
   Node *get(int i) {
     if (i >= length) {
-      throw invalid_argument("index out of bounds");
+      throw invalid_argument("index out of bounds.");
     }
     int b = 0;
     Node *temp = first_node;
@@ -76,6 +75,22 @@ struct LinkedList {
       b += 1;
     }
     return temp;
+  }
+
+  Node *get_by_id(int id) {
+    Node *temp = first_node;
+
+    while (true) {
+      if (temp->patientID == id) {
+        return temp;
+      }
+      if (temp->next) {
+
+        temp = temp->next;
+      } else {
+        throw invalid_argument("invalid ID.");
+      }
+    }
   }
 }
 
