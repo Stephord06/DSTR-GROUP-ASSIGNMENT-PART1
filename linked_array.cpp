@@ -36,17 +36,25 @@ struct LinkedList {
     temp->next = new_node;
   }
   void append(int item, int i) {}
-  // broken implementation for now
+
   void pop() {
-    Node *temp = first_node;
-    int i = 0;
-    while (i < length) {
-      temp = temp->next;
-      i += 1;
+    if (!first_node) {
+      return;
     }
-    free(temp);
-    length -= 1;
+    Node *temp = first_node;
+    Node *after_temp = first_node;
+    while (temp->next) {
+      after_temp = temp->next;
+      if (!after_temp->next) {
+        free(after_temp);
+        temp->next = nullptr;
+        length -= 1;
+        return;
+      }
+      temp = temp->next;
+    }
   }
+
   void display_all() {
     Node *temp = first_node;
     while (temp) {
