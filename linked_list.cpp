@@ -5,6 +5,14 @@
 #include <string>
 using namespace std;
 
+enum Base {
+  AGE,
+  LENGTH_OF_STAY,
+  BASE_COST_PER_HOUR,
+  DAYS_VISITS_PER_YEAR
+
+};
+
 struct Node {
   string patientID, careType;
   int age, lengthOfStay, baseCostPerHour, daysVisitsPerYear;
@@ -123,6 +131,77 @@ struct LinkedList {
       after_temp = temp->next;
     }
     throw invalid_argument("invalid ID.");
+  }
+
+  LinkedList search(Base searching_base, int value) {
+    /// Searching age, lengthOfStay, baseCostPerHour, daysVisitsPerYear using
+    /// Linear search
+    LinkedList *results = new LinkedList;
+    Node *temp = first_node;
+    while (true) {
+      switch (searching_base) {
+      case AGE:
+        if (value == temp->age) {
+          results->push(*temp);
+        }
+        break;
+      case LENGTH_OF_STAY:
+        if (value == temp->lengthOfStay) {
+          results->push(*temp);
+        }
+        break;
+      case BASE_COST_PER_HOUR:
+        if (value == temp->baseCostPerHour) {
+          results->push(*temp);
+        }
+        break;
+      case DAYS_VISITS_PER_YEAR:
+        if (value == temp->daysVisitsPerYear) {
+          results->push(*temp);
+        }
+        break;
+      }
+      if (temp->next) {
+
+        temp = temp->next;
+      } else {
+        break;
+      }
+    }
+    return *results;
+  }
+  Node *search_id(string value) {
+    /// Searching id using Linear search
+    Node *temp = first_node;
+    while (true) {
+      if (value == temp->patientID) {
+        break;
+      }
+      if (temp->next) {
+
+        temp = temp->next;
+      } else {
+        break;
+      }
+    }
+    return temp;
+  }
+  LinkedList *search_caretype(string value) {
+    /// Searching caretype using Linear search
+    LinkedList *results = new LinkedList;
+    Node *temp = first_node;
+    while (true) {
+      if (value == temp->careType) {
+        results->push(*temp);
+      }
+      if (temp->next) {
+
+        temp = temp->next;
+      } else {
+        break;
+      }
+    }
+    return results;
   }
 };
 
