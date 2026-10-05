@@ -6,12 +6,18 @@
 using namespace std;
 
 struct Node {
-  // intial values and should be changed later
   int patientID;
-  string name;
+  int age, lengthOfStay, baseCostPerHour, daysVisitsPerYear;
+  string careType;
+
   Node *next;
 
-  string display() { return format("[{}, {}]", patientID, name); }
+  string display() {
+    return format("[Care type={}, ID={}, Age={}, Length of stay={}, Base cost "
+                  "per hour={}, Days visits per year={}]",
+                  careType, patientID, age, lengthOfStay, baseCostPerHour,
+                  daysVisitsPerYear);
+  }
 };
 struct LinkedList {
   int length;
@@ -21,8 +27,11 @@ struct LinkedList {
     length = 0;
     first_node = nullptr;
   }
-  void push(int id, string name) {
-    Node *new_node = new Node{id, name, nullptr};
+  void push(int id, int age, string careType, int lengthOfStay,
+            int baseCostPerHour, int daysVisitsPerYear) {
+    Node *new_node = new Node{
+        id,       age,    lengthOfStay, baseCostPerHour, daysVisitsPerYear,
+        careType, nullptr};
     length += 1;
     if (!first_node) {
       first_node = new_node;
