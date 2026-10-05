@@ -26,11 +26,14 @@ struct LinkedList {
     length = 0;
     first_node = nullptr;
   }
-  void push(int id, int age, string careType, int lengthOfStay,
-            int baseCostPerHour, int daysVisitsPerYear) {
-    Node *new_node = new Node{
-        id,       age,    lengthOfStay, baseCostPerHour, daysVisitsPerYear,
-        careType, nullptr};
+  void push(Node node) {
+    Node *new_node = new Node{node.patientID,
+                              node.careType,
+                              node.age,
+                              node.lengthOfStay,
+                              node.baseCostPerHour,
+                              node.daysVisitsPerYear,
+                              nullptr};
     length += 1;
     if (!first_node) {
       first_node = new_node;
@@ -84,8 +87,7 @@ struct LinkedList {
     }
     return temp;
   }
-
-  Node *get_by_id(int id) {
+  Node *get_by_id(string id) {
     Node *temp = first_node;
 
     while (true) {
@@ -101,7 +103,7 @@ struct LinkedList {
     }
   }
 
-  void delete_by_id(int id) {
+  void delete_by_id(string id) {
     Node *temp = first_node;
     Node *after_temp = first_node;
     while (temp->next) {
