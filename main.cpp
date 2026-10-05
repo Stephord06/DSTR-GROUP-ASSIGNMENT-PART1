@@ -2,6 +2,7 @@
 #include "Array sorting and searching/sortArrayByMedicalCost.hpp"
 #include "Array sorting and searching/searchArray.hpp"
 #include "Array sorting and searching/sortArrayByAge.hpp"
+#include "analysis.hpp"
 #include <iostream>
 #include <chrono>
 #include <windows.h>
@@ -38,6 +39,7 @@ int main()
         cout << "[2] Display all data with the TotalCost " << endl;
         cout << "[3] Display all data with the TotalCost sort by Bubblesort" << endl;
         cout << "[4] Display all data sort by Age using Merge Sort" << endl;
+        cout << "[5] Display Age Group Medical Cost Analysis" << endl;
         cout << "[0] Exit the System" << endl;
         cout << "\nInsert a number to select a function to execute: ";
         cin >> selection;
@@ -45,6 +47,61 @@ int main()
 
         switch (selection)
         {
+        case 5:
+        {
+            if (costDataset.size == 0)
+            {
+                costDataset = addMedicalCost();
+            }
+
+            int subChoice = 0;
+            cout << "--- Age Group Analysis Sub-Menu ---" << endl;
+            cout << "[1] Display ALL Age Categories Summary" << endl;
+            cout << "[2] 0-17 (Children & Adolescents)" << endl;
+            cout << "[3] 18-25 (Young Adults / University Students)" << endl;
+            cout << "[4] 26-40 (Adults)" << endl;
+            cout << "[5] 41-60 (Middle-Aged Adults)" << endl;
+            cout << "[6] 61-100 (Seniors / Elderly)" << endl;
+            cout << "Select Category (1-6): ";
+            cin >> subChoice;
+
+            size_t memBefore = getMemoryUsage();
+            auto start = chrono::high_resolution_clock::now();
+
+            switch (subChoice) {
+                case 1:
+                    analyzeAllAgeGroups(costDataset);
+                    break;
+                case 2:
+                    analyzeAgeGroup(costDataset, 0, 17, "Children & Adolescents");
+                    break;
+                case 3:
+                    analyzeAgeGroup(costDataset, 18, 25, "Young Adults / University Students");
+                    break;
+                case 4:
+                    analyzeAgeGroup(costDataset, 26, 40, "Adults");
+                    break;
+                case 5:
+                    analyzeAgeGroup(costDataset, 41, 60, "Middle-Aged Adults");
+                    break;
+                case 6:
+                    analyzeAgeGroup(costDataset, 61, 100, "Seniors / Elderly");
+                    break;
+                default:
+                    cout << "[!] Invalid category selected." << endl;
+                    break;
+            }
+
+            auto end = chrono::high_resolution_clock::now();
+            size_t memAfter = getMemoryUsage();
+
+            auto duration = chrono::duration<double, std::micro>(end - start);
+            long long deltaBytes = static_cast<long long>(memAfter) - static_cast<long long>(memBefore);
+
+            cout << "\nMemory Gap: " << deltaBytes / 1024 << " KB\n";
+            cout << "Analysis Execution Time: " << duration.count() << " us" << endl;
+            break;
+        }
         case 4:
         {
             // load data at once
