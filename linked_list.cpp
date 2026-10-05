@@ -6,9 +6,8 @@
 using namespace std;
 
 struct Node {
-  int patientID;
+  string patientID, careType;
   int age, lengthOfStay, baseCostPerHour, daysVisitsPerYear;
-  string careType;
 
   Node *next;
 
