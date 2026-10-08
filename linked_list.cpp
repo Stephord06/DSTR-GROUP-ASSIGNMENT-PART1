@@ -9,7 +9,8 @@ enum Base {
   AGE,
   LENGTH_OF_STAY,
   BASE_COST_PER_HOUR,
-  DAYS_VISITS_PER_YEAR
+  DAYS_VISITS_PER_YEAR,
+  TOTAL_MEDICAL_COST,
 
 };
 
@@ -20,11 +21,15 @@ struct Node {
   Node *next;
 
   string display() {
-    return format("[Care type={}, ID={}, Age={}, Length of stay={}, Base cost "
-                  "per hour={}, Days visits per year={}]",
-                  careType, patientID, age, lengthOfStay, baseCostPerHour,
-                  daysVisitsPerYear);
+    return format(
+        "[Care type={}, ID={}, Age={}, Length of stay={}, Base cost "
+        "per hour={}, Days visits per year={}, Total medical cost={}]",
+        careType, patientID, age, lengthOfStay, baseCostPerHour,
+        daysVisitsPerYear, get_total_medical_cost());
   }
+  int get_total_medical_cost() {
+    return (baseCostPerHour * lengthOfStay) * daysVisitsPerYear;
+  };
 };
 struct LinkedList {
   int length;
@@ -195,6 +200,12 @@ struct LinkedList {
             swap(i, b);
           }
           break;
+        case TOTAL_MEDICAL_COST:
+          if (temp->get_total_medical_cost() <
+              temp2->get_total_medical_cost()) {
+            swap(i, b);
+          }
+          break;
         }
       }
     }
@@ -205,8 +216,8 @@ struct LinkedList {
   }
 
   LinkedList search(Base searching_base, int value) {
-    /// Searching age, lengthOfStay, baseCostPerHour, daysVisitsPerYear using
-    /// Linear search
+    /// Searching age, lengthOfStay, baseCostPerHour, daysVisitsPerYear,
+    /// TotalMedicalCost using Linear search
     LinkedList *results = new LinkedList;
     Node *temp = first_node;
     while (true) {
@@ -228,6 +239,11 @@ struct LinkedList {
         break;
       case DAYS_VISITS_PER_YEAR:
         if (value == temp->daysVisitsPerYear) {
+          results->push(*temp);
+        }
+        break;
+      case TOTAL_MEDICAL_COST:
+        if (value == temp->get_total_medical_cost()) {
           results->push(*temp);
         }
         break;
