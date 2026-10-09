@@ -1,24 +1,25 @@
 #include "general-tools/datasets-implementation-array.hpp"
 #include "Array sorting and searching/bubbleSortAge.hpp"
 #include "Array sorting and searching/searchArray.hpp"
-#include "Array sorting and searching/sortArrayByAge.hpp"
+#include "Array sorting and searching/mergeSortAge.hpp"
 #include "analysis.hpp"
 #include <iostream>
 #include <chrono>
 #include <windows.h>
-#include <psapi.h> 
+#include <psapi.h>
 
 using namespace std::chrono;
 
-size_t getMemoryUsage() {
+size_t getMemoryUsage()
+{
     PROCESS_MEMORY_COUNTERS pmc;
-    if (GetProcessMemoryInfo(GetCurrentProcess(), &pmc, sizeof(pmc))) {
+    if (GetProcessMemoryInfo(GetCurrentProcess(), &pmc, sizeof(pmc)))
+    {
         // PagefileUsage represents Private Bytes, which is sensitive to exact byte allocations
-        return pmc.PagefileUsage; 
+        return pmc.PagefileUsage;
     }
     return 0;
 }
-
 
 int main()
 {
@@ -57,28 +58,29 @@ int main()
             size_t memBefore = getMemoryUsage();
             auto start = chrono::high_resolution_clock::now();
 
-            switch (subChoice) {
-                case 1:
-                    analyzeAllAgeGroups(dataset);
-                    break;
-                case 2:
-                    analyzeAgeGroup(dataset, 0, 17, "Children & Adolescents");
-                    break;
-                case 3:
-                    analyzeAgeGroup(dataset, 18, 25, "Young Adults / University Students");
-                    break;
-                case 4:
-                    analyzeAgeGroup(dataset, 26, 40, "Adults");
-                    break;
-                case 5:
-                    analyzeAgeGroup(dataset, 41, 60, "Middle-Aged Adults");
-                    break;
-                case 6:
-                    analyzeAgeGroup(dataset, 61, 100, "Seniors / Elderly");
-                    break;
-                default:
-                    cout << "[!] Invalid category selected." << endl;
-                    break;
+            switch (subChoice)
+            {
+            case 1:
+                analyzeAllAgeGroups(dataset);
+                break;
+            case 2:
+                analyzeAgeGroup(dataset, 0, 17, "Children & Adolescents");
+                break;
+            case 3:
+                analyzeAgeGroup(dataset, 18, 25, "Young Adults / University Students");
+                break;
+            case 4:
+                analyzeAgeGroup(dataset, 26, 40, "Adults");
+                break;
+            case 5:
+                analyzeAgeGroup(dataset, 41, 60, "Middle-Aged Adults");
+                break;
+            case 6:
+                analyzeAgeGroup(dataset, 61, 100, "Seniors / Elderly");
+                break;
+            default:
+                cout << "[!] Invalid category selected." << endl;
+                break;
             }
 
             auto end = chrono::high_resolution_clock::now();
@@ -99,36 +101,32 @@ int main()
                 dataLoadingArray(dataset);
             }
 
-            arrayDataset *sortedCopy = new arrayDataset;
-            copyDataset(dataset, *sortedCopy);
+            arrayDataset sortedCopy;
+            copyDataset(dataset, sortedCopy);
 
             size_t memBefore = getMemoryUsage();
             auto start = chrono::high_resolution_clock::now();
-            mergeSortByAge(*sortedCopy);
+
+            mergeSortByAge(sortedCopy);
+
             auto end = chrono::high_resolution_clock::now();
             size_t memAfter = getMemoryUsage();
             auto duration = chrono::duration_cast<chrono::microseconds>(end - start);
 
             long long deltaBytes = static_cast<long long>(memAfter) - static_cast<long long>(memBefore);
-            
-            printAllRecords(*sortedCopy);
+
+            printAllRecords(sortedCopy);
             cout << "Memory Gap: " << deltaBytes / 1024 << " KB\n"; // Output explicitly in KB
             cout << "Merge Sort (Age) execution time: " << duration.count() << " us" << endl;
-            cout << "Records before: " << dataset.size << " | after: " << sortedCopy->size << endl;
-            cout << "Enter any for Exit or  Enter 2 Search Data" << endl;
+            cout << "Records before: " << dataset.size << " | after: " << sortedCopy.size << endl;
+
+            cout << "Enter 2 to Search Data or any other number to Exit: " << endl;
             cin >> choice;
             if (choice == 2)
             {
-                receiveResponse(*sortedCopy);
-                delete sortedCopy;
-                break;
+                receiveResponse(sortedCopy);
             }
-            else
-            {
-                delete sortedCopy;
-                break;
-            }
-            delete sortedCopy;
+
             break;
         }
         case 2:
@@ -153,7 +151,7 @@ int main()
             cout << "Memory Gap: " << deltaBytes / 1024 << " KB\n";
             cout << "Bubble Sort (Age) execution time: " << duration.count() << " us" << endl;
             cout << "Dataset Sorted!!!" << endl;
-            cout << "Enter any for Exit or  Enter 2 Search Data" << endl;
+            cout << "Enter 2 to Search Data or any other number to Exit: " << endl;
             cin >> choice;
             if (choice == 2)
             {
