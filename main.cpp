@@ -44,6 +44,7 @@ int main()
         {
         case 4:
         {
+            dataset.clear();
             if (dataset.size == 0)
             {
                 dataLoadingArray(dataset);
@@ -136,6 +137,7 @@ int main()
         }
         case 2:
         {
+            dataset.clear();
             arrayDataset bubbleSortData;
             // load data at once
             if (dataset.size == 0)
