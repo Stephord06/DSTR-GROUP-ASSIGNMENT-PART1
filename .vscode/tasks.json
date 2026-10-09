@@ -8,14 +8,14 @@
                 "-fdiagnostics-color=always",
                 "-g",
                 "-I${workspaceFolder}",
-                "${workspaceFolder}\\main.cpp",
-                "${workspaceFolder}\\general-tools\\datasets-implementation-array.cpp",
-                "${workspaceFolder}\\Array sorting and searching\\bubbleSortAge.cpp",
-                "${workspaceFolder}\\Array sorting and searching\\searchArray.cpp",
-                "${workspaceFolder}\\Array sorting and searching\\sortArrayByAge.cpp",
-                "-lpsapi",
+                "${workspaceFolder}/main.cpp",
+                "${workspaceFolder}/general-tools/datasets-implementation-array.cpp",
+                "${workspaceFolder}/Array sorting and searching/mergeSortAge.cpp",
+                "${workspaceFolder}/Array sorting and searching/bubbleSortAge.cpp",
+                "${workspaceFolder}/Array sorting and searching/searchArray.cpp",
                 "-o",
-                "${workspaceFolder}\\main.exe"
+                "${workspaceFolder}/main.exe",
+                "-lpsapi"
             ],
             "options": {
                 "cwd": "${workspaceFolder}"

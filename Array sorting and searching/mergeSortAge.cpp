@@ -1,4 +1,4 @@
-#include "sortArrayByAge.hpp"
+#include "mergeSortAge.hpp"
 
 void copyDataset(const arrayDataset &source, arrayDataset &destination)
 {
