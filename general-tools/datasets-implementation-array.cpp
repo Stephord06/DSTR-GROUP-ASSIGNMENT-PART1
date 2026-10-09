@@ -85,14 +85,7 @@ void dataLoadingArray(arrayDataset &dataset)
         }
     }
 }
-
-arrayDataset returnDataset()
-{
-    arrayDataset dataset;
-    dataLoadingArray(dataset);
-    return dataset;
-}
-
+    
 void printAllRecords(const arrayDataset &dataset)
 {
     cout << "Load Total Valid Records: " << dataset.size << "\n"

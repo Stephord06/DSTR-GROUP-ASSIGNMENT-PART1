@@ -1,5 +1,5 @@
 #pragma once
-#include "Array sorting and searching/sortArrayByMedicalCost.hpp"
+#include "general-tools/datasets-implementation-array.hpp"
 #include <iostream>
 #include <iomanip>
 #include <string>
@@ -36,7 +36,7 @@ inline string formatCurrency(double amount) {
 }
 
 // Single Age Group Analysis
-inline void analyzeAgeGroup(const medicalCostDataset& dataset, int minAge, int maxAge, const string& groupLabel) {
+inline void analyzeAgeGroup(const arrayDataset& dataset, int minAge, int maxAge, const string& groupLabel) {
     CareTypeSummary summaries[100];
     int summaryCount = 0;
     double grandTotalBilling = 0.0;
@@ -45,7 +45,7 @@ inline void analyzeAgeGroup(const medicalCostDataset& dataset, int minAge, int m
         const auto& record = dataset.data[i];
 
         if (record.age >= minAge && record.age <= maxAge) {
-            grandTotalBilling += record.medicalCost;
+            grandTotalBilling += record.lengthOfStay * record.baseCostPerHour * record.daysVisitsPerYear;
 
             int foundIndex = -1;
             for (int j = 0; j < summaryCount; j++) {
@@ -57,11 +57,11 @@ inline void analyzeAgeGroup(const medicalCostDataset& dataset, int minAge, int m
 
             if (foundIndex != -1) {
                 summaries[foundIndex].patientCount++;
-                summaries[foundIndex].totalCost += record.medicalCost;
+                summaries[foundIndex].totalCost += record.lengthOfStay * record.baseCostPerHour * record.daysVisitsPerYear;
             } else {
                 summaries[summaryCount].careType = record.careType;
                 summaries[summaryCount].patientCount = 1;
-                summaries[summaryCount].totalCost = record.medicalCost;
+                summaries[summaryCount].totalCost = record.lengthOfStay * record.baseCostPerHour * record.daysVisitsPerYear;
                 summaryCount++;
             }
         }
@@ -96,7 +96,7 @@ inline void analyzeAgeGroup(const medicalCostDataset& dataset, int minAge, int m
 }
 
 // Generates report for ALL age categories at once
-inline void analyzeAllAgeGroups(const medicalCostDataset& dataset) {
+inline void analyzeAllAgeGroups(const arrayDataset& dataset) {
     AgeCategory categories[] = {
         {0, 17, "Children & Adolescents"},
         {18, 25, "Young Adults / University Students"},

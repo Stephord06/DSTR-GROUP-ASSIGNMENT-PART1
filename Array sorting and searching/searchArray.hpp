@@ -1,11 +1,11 @@
 #pragma once
+#include "general-tools/datasets-implementation-array.hpp"
 #include <iostream>
+#include <string>
 
 using namespace std;
-using namespace std::chrono;
 
-//only for medicalCostDataset temporary
-void receiveResponse(const medicalCostDataset& arr);
-medicalCostDataset searchTotalCost(const medicalCostDataset& arr, const string& x);
-medicalCostDataset totalCostGroup(const int& minV, const int& maxV,const medicalCostDataset& arr );
+void receiveResponse(const arrayDataset& arr);
+arrayDataset searchAge(const arrayDataset& arr, const string& x);
+arrayDataset searchAgeGroup(const int& minV, const int& maxV,const arrayDataset& arr );
 

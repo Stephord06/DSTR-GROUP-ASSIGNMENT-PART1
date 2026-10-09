@@ -10,7 +10,7 @@
                 "-I${workspaceFolder}",
                 "${workspaceFolder}\\main.cpp",
                 "${workspaceFolder}\\general-tools\\datasets-implementation-array.cpp",
-                "${workspaceFolder}\\Array sorting and searching\\sortArrayByMedicalCost.cpp",
+                "${workspaceFolder}\\Array sorting and searching\\bubbleSortAge.cpp",
                 "${workspaceFolder}\\Array sorting and searching\\searchArray.cpp",
                 "${workspaceFolder}\\Array sorting and searching\\sortArrayByAge.cpp",
                 "-lpsapi",
