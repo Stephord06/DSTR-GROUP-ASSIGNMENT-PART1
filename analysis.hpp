@@ -42,7 +42,7 @@ inline void analyzeAgeGroup(const arrayDataset& dataset, int minAge, int maxAge,
     double grandTotalBilling = 0.0;
 
     for (int i = 0; i < dataset.size; i++) {
-        const auto& record = dataset.data[i];
+        const auto record = dataset.data[i];
 
         if (record.age >= minAge && record.age <= maxAge) {
             grandTotalBilling += record.lengthOfStay * record.baseCostPerHour * record.daysVisitsPerYear;

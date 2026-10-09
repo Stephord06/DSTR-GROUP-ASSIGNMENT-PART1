@@ -43,6 +43,11 @@ int main()
         {
         case 4:
         {
+            if (dataset.size == 0)
+            {
+                dataLoadingArray(dataset);
+            }
+            
             int subChoice = 0;
             cout << "--- Age Group Analysis Sub-Menu ---" << endl;
             cout << "[1] Display ALL Age Categories Summary" << endl;
