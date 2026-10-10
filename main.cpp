@@ -92,11 +92,11 @@ int main()
             auto end = chrono::high_resolution_clock::now();
             size_t memAfter = getMemoryUsage();
 
-            auto duration = chrono::duration<double, std::micro>(end - start);
+            auto duration = chrono::duration<double, std::milli>(end - start);
             long long deltaBytes = static_cast<long long>(memAfter) - static_cast<long long>(memBefore);
 
             cout << "\nMemory Gap: " << deltaBytes / 1024 << " KB\n";
-            cout << "Analysis Execution Time: " << duration.count() << " us" << endl;
+            cout << "Analysis Execution Time: " << duration.count() << " ms" << endl;
             break;
         }
         case 3:
@@ -115,15 +115,17 @@ int main()
 
             mergeSortByAge(sortedCopy);
 
+            printAllRecords(sortedCopy);
+
             auto end = chrono::high_resolution_clock::now();
             size_t memAfter = getMemoryUsage();
-            auto duration = chrono::duration_cast<chrono::microseconds>(end - start);
+            auto duration = chrono::duration_cast<chrono::milliseconds>(end - start);
 
             long long deltaBytes = static_cast<long long>(memAfter) - static_cast<long long>(memBefore);
 
-            printAllRecords(sortedCopy);
+            
             cout << "Memory Gap: " << deltaBytes / 1024 << " KB\n"; // Output explicitly in KB
-            cout << "Merge Sort (Age) execution time: " << duration.count() << " us" << endl;
+            cout << "Merge Sort (Age) execution time: " << duration.count() << " ms" << endl;
             cout << "Records before: " << dataset.size << " | after: " << sortedCopy.size << endl;
 
             cout << "Enter 2 to Search Data or any other number to Exit: " << endl;
@@ -149,14 +151,16 @@ int main()
             size_t memBefore = getMemoryUsage();
             bubbleSortData = bubbleSort(dataset);
             size_t memAfter = getMemoryUsage();
+
+            printAllRecords(bubbleSortData);
             // calculate execution time end point;
             auto end = chrono::high_resolution_clock::now();
             // calculate duration between end&start;
             long long deltaBytes = static_cast<long long>(memAfter) - static_cast<long long>(memBefore);
-            auto duration = chrono::duration<double, std::micro>(end - start);
-            printAllRecords(bubbleSortData);
+            auto duration = chrono::duration<double, std::milli>(end - start);
+            
             cout << "Memory Gap: " << deltaBytes / 1024 << " KB\n";
-            cout << "Bubble Sort (Age) execution time: " << duration.count() << " us" << endl;
+            cout << "Bubble Sort (Age) execution time: " << duration.count() << " ms" << endl;
             cout << "Dataset Sorted!!!" << endl;
             cout << "Enter 2 to Search Data or any other number to Exit: " << endl;
             cin >> choice;

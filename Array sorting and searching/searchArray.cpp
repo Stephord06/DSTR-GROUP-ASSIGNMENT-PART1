@@ -58,11 +58,11 @@ void receiveResponse(const arrayDataset& arr) {
         auto start = std::chrono::high_resolution_clock::now();
         result = searchAge(arr, searchingTarget);
         auto end = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double, std::micro> duration = end - start;
-        double microseconds = duration.count();
-
         printAllRecords(result);
-        cout << "Linear Search execution time: " << microseconds << " us" << endl;
+        auto duration = chrono::duration<double, std::milli>(end - start);
+        double milliseconds = duration.count();
+
+        cout << "Linear Search execution time: " << milliseconds << " ms" << endl;
     }
     else if(searching == 2){
         cout << "Give the Age group (e.g. 20-40, 30-50) :" << endl;
@@ -73,12 +73,12 @@ void receiveResponse(const arrayDataset& arr) {
 
         auto start = std::chrono::high_resolution_clock::now();
         result = searchAgeGroup(minV,maxV,arr);
-        auto end = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double, std::micro> duration = end - start;
-        double microseconds = duration.count(); 
-        
         printAllRecords(result);
-        cout << "Linear Search execution time: " << microseconds << " us" << endl;
+        auto end = std::chrono::high_resolution_clock::now();
+        auto duration = chrono::duration<double, std::milli>(end - start);
+        double milliseconds = duration.count();
+        
+        cout << "Linear Search execution time: " << milliseconds << " ms" << endl;
     }
     else {
         cout << "Invalid selection. Please enter 1 or 2." << endl;
