@@ -1,5 +1,7 @@
+#include "linked_list.cpp"
 #include <cctype>
 #include <cerrno>
+#include <chrono>
 #include <cstring>
 #include <fstream>
 #include <iostream>
@@ -7,16 +9,12 @@
 using namespace std;
 
 int main() {
-  char dataset0[105] =
-      "/home/noumanamaanfouzaneshaanuzair/DSTR-GROUP-ASSIGNMENT-PART1/datasets/"
-      "dataset1 facility_a.csv";
-  char dataset1[105] =
-      "/home/noumanamaanfouzaneshaanuzair/DSTR-GROUP-ASSIGNMENT-PART1/datasets/"
-      "dataset2 facility_b.csv";
-  char dataset2[105] =
-      "/home/noumanamaanfouzaneshaanuzair/DSTR-GROUP-ASSIGNMENT-PART1/datasets/"
-      "dataset3_facility_c.csv";
-
+  const char *dataset0 =
+      "DSTR-GROUP-ASSIGNMENT-PART1/datasets/dataset1 facility_a.csv";
+  const char *dataset1 =
+      "DSTR-GROUP-ASSIGNMENT-PART1/datasets/dataset2 facility_b.csv";
+  const char *dataset2 =
+      "DSTR-GROUP-ASSIGNMENT-PART1/datasets/dataset3_facility_c.csv";
   bool stop = false;
   string data;
   int step = 0;
@@ -38,11 +36,14 @@ int main() {
       return 1;
     }
 
+    LinkedList values;
     do {
       getline(file, data);
       if (file.good()) {
-        // Append in Linked_List, Return Linked_List
-        ;
+        // Node *values = nullptr;
+        // push(values)
+        // Bubble Sort
+        // Linear Search
       }
     } while (
         file.good()  ? true
