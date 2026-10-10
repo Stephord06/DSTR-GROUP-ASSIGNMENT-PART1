@@ -133,7 +133,7 @@ int main()
                 receiveResponse(sortedCopy);
             }
 
-            break;
+            break;  
         }
         case 2:
         {
@@ -173,9 +173,21 @@ int main()
         }
         case 1:
         {
+            dataset.clear();
             dataLoadingArray(dataset);
             printAllRecords(dataset);
-            dataset.clear();
+
+            cout << "Enter 2 to Search Data or any other number to Exit: " << endl;
+            cin >> choice;
+            if (choice == 2)
+            {
+                receiveResponse(dataset);
+                break;
+            }
+            else
+            {
+                break;
+            }
             break;
         }
         case 0:

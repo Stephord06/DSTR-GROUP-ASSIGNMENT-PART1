@@ -58,8 +58,8 @@ void receiveResponse(const arrayDataset& arr) {
         auto start = std::chrono::high_resolution_clock::now();
         result = searchAge(arr, searchingTarget);
         auto end = std::chrono::high_resolution_clock::now();
-        auto duration = duration_cast<nanoseconds>(end - start);
-        double microseconds = duration.count() / 1000.0;
+        std::chrono::duration<double, std::micro> duration = end - start;
+        double microseconds = duration.count();
 
         printAllRecords(result);
         cout << "Linear Search execution time: " << microseconds << " us" << endl;
@@ -74,8 +74,8 @@ void receiveResponse(const arrayDataset& arr) {
         auto start = std::chrono::high_resolution_clock::now();
         result = searchAgeGroup(minV,maxV,arr);
         auto end = std::chrono::high_resolution_clock::now();
-        auto duration = duration_cast<nanoseconds>(end - start);
-        double microseconds = duration.count() / 1000.0; 
+        std::chrono::duration<double, std::micro> duration = end - start;
+        double microseconds = duration.count(); 
         
         printAllRecords(result);
         cout << "Linear Search execution time: " << microseconds << " us" << endl;
