@@ -1,10 +1,13 @@
-#include "linked_list.cpp"
-#include <chrono>
-#include <cstdio>
-#include <filesystem>
-#include <fstream>
 #include <psapi.h>
 #include <windows.h>
+
+#include <chrono>
+#include <cstdio>
+#include <cstdlib>
+#include <filesystem>
+#include <fstream>
+
+#include "linked_list.cpp"
 
 using namespace std;
 using namespace std::filesystem;
@@ -22,11 +25,6 @@ int all_execution_cycles[3];
 
 size_t mem_before_calculations[3] = {0, 0, 0};
 size_t mem_after_calculations[3] = {0, 0, 0};
-
-extern "C" {
-int atoi(const char *str);
-int printf(const char *format, ...);
-}
 
 size_t getMemoryUsage() {
   PROCESS_MEMORY_COUNTERS pmc;
@@ -234,6 +232,127 @@ long long analyses(const LinkedList &dataset, int sub_selection,
   return 0;
 }
 
+void linear_search(LinkedList &value_0, LinkedList &value_1,
+                   LinkedList &value_2) {
+  int post_sort_choice = 0;
+  printf("All datasets processed. Enter 2 to Search Data or any other number "
+         "to continue: ");
+  if (scanf("%d", &post_sort_choice) != 1) {
+    while (getchar() != '\n')
+      ;
+    printf("Invalid input. Continuing.\n");
+    return;
+  }
+  printf("\n");
+  if (post_sort_choice == 2) {
+    int search_type = 0;
+    printf("Searching data based on Age across all datasets\n");
+    printf("Enter 1 for precise Age match or 2 for an Age Group window: ");
+    if (scanf("%d", &search_type) != 1) {
+      while (getchar() != '\n')
+        ;
+      printf("Invalid input. Continuing.\n");
+      return;
+    }
+    printf("\n");
+    if (search_type == 1) {
+      int target_age = 0;
+      printf("Give the Age to search: ");
+      if (scanf("%d", &target_age) != 1) {
+        while (getchar() != '\n')
+          ;
+        printf("Invalid input. Continuing.\n");
+        return;
+      }
+      printf("\n");
+      size_t searchMemBefore = getMemoryUsage();
+      auto searchStart = steady_clock::now();
+      LinkedList search_res0 = value_0.search(AGE, target_age);
+      LinkedList search_res1 = value_1.search(AGE, target_age);
+      LinkedList search_res2 = value_2.search(AGE, target_age);
+      auto searchEnd = steady_clock::now();
+      size_t searchMemAfter = getMemoryUsage();
+      table_format_2(search_res0, all_execution_cycles[0], 0);
+      table_format_2(search_res1, all_execution_cycles[1], 1);
+      table_format_2(search_res2, all_execution_cycles[2], 2);
+      auto searchDuration =
+          duration_cast<duration<double, std::milli>>(searchEnd - searchStart);
+      long long searchDeltaBytes = static_cast<long long>(searchMemAfter) -
+                                   static_cast<long long>(searchMemBefore);
+      printf("==================================================\n");
+      printf("-> LINEAR SEARCH DIAGNOSTICS\n");
+      printf("==================================================\n");
+      printf("  -> Linear Search execution latency: %f ms\n",
+             searchDuration.count());
+      printf("  -> Dynamic Tracking Memory Delta: %lld KB\n\n",
+             searchDeltaBytes / 1024);
+    } else if (search_type == 2) {
+      int min_age = 0, max_age = 0;
+      printf("Give the Age group limits:\n");
+      printf("First Age Boundary (Minimum): ");
+      if (scanf("%d", &min_age) != 1) {
+        while (getchar() != '\n')
+          ;
+        printf("Invalid input. Continuing.\n");
+        return;
+      }
+      printf("Second Age Boundary (Maximum): ");
+      if (scanf("%d", &max_age) != 1) {
+        while (getchar() != '\n')
+          ;
+        printf("Invalid input. Continuing.\n");
+        return;
+      }
+      printf("\n");
+      size_t searchMemBefore = getMemoryUsage();
+      auto searchStart = steady_clock::now();
+      LinkedList search_res0;
+      for (Node *curr = value_0.first_node; curr != nullptr;
+           curr = curr->next) {
+        if (curr->age >= min_age && curr->age <= max_age) {
+          Node copyNode = *curr;
+          copyNode.next = nullptr;
+          search_res0.push(copyNode);
+        }
+      }
+      LinkedList search_res1;
+      for (Node *curr = value_1.first_node; curr != nullptr;
+           curr = curr->next) {
+        if (curr->age >= min_age && curr->age <= max_age) {
+          Node copyNode = *curr;
+          copyNode.next = nullptr;
+          search_res1.push(copyNode);
+        }
+      }
+      LinkedList search_res2;
+      for (Node *curr = value_2.first_node; curr != nullptr;
+           curr = curr->next) {
+        if (curr->age >= min_age && curr->age <= max_age) {
+          Node copyNode = *curr;
+          copyNode.next = nullptr;
+          search_res2.push(copyNode);
+        }
+      }
+      auto searchEnd = steady_clock::now();
+      size_t searchMemAfter = getMemoryUsage();
+      table_format_2(search_res0, all_execution_cycles[0], 0);
+      table_format_2(search_res1, all_execution_cycles[1], 1);
+      table_format_2(search_res2, all_execution_cycles[2], 2);
+      auto searchDuration =
+          duration_cast<duration<double, std::milli>>(searchEnd - searchStart);
+      long long searchDeltaBytes = static_cast<long long>(searchMemAfter) -
+                                   static_cast<long long>(searchMemBefore);
+      printf("==================================================\n");
+      printf("-> LINEAR SEARCH DIAGNOSTICS\n");
+      printf("==================================================\n");
+      printf("  -> Linear Search Range execution latency: %f ms\n",
+             searchDuration.count());
+      printf("  -> Dynamic Tracking Memory Delta: %lld KB\n\n",
+             searchDeltaBytes / 1024);
+    }
+  }
+}
+
 inline void bubble_sort_and_linear_search_csv(LinkedList &current_values,
                                               const Node *heap_node,
                                               long long &linear_duration,
@@ -249,40 +368,31 @@ inline void bubble_sort_and_linear_search_csv(LinkedList &current_values,
     break;
   }
   auto loop_checkpoint_a = steady_clock::now();
-
   LinkedList linear = current_values.search(AGE, heap_node->age);
-
   benchmarking_calculations(dataset_index, loop_checkpoint_a, linear_duration,
                             cycles);
 }
 
 LinkedList csv_reader(const Path_ID_Map &config, int output_mode,
-                      int sub_selection = 1) {
+                      int sub_selection) {
   char csv_row_data[70];
   LinkedList current_values;
   const path &current_dataset = config.file_path;
   int assigned_id = config.assigned_id;
-
   ifstream file(current_dataset);
   if (!file.is_open()) {
     return current_values;
   }
-
   file.getline(csv_row_data, sizeof(csv_row_data));
-
   all_starts[assigned_id] = steady_clock::now();
   long long total_linear_duration_us = 0;
-
   do {
     file.getline(csv_row_data, sizeof(csv_row_data));
-
     if (file.good()) {
       char *p = csv_row_data;
       char *fields[6] = {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
       int field_idx = 0;
-
       fields[field_idx++] = p;
-
       while (*p != '\0') {
         if (*p == '\r' || *p == '\n') {
           *p = '\0';
@@ -299,13 +409,11 @@ LinkedList csv_reader(const Path_ID_Map &config, int output_mode,
         }
         p++;
       }
-
       if (fields[0] == nullptr || fields[1] == nullptr ||
           fields[2] == nullptr || fields[3] == nullptr ||
           fields[4] == nullptr || fields[5] == nullptr) {
         continue;
       }
-
       Node *heap_node = new Node;
       heap_node->patientID = fields[0];
       heap_node->careType = fields[2];
@@ -314,9 +422,7 @@ LinkedList csv_reader(const Path_ID_Map &config, int output_mode,
       heap_node->baseCostPerHour = atoi(fields[4]);
       heap_node->daysVisitsPerYear = atoi(fields[5]);
       heap_node->next = nullptr;
-
       current_values.push(*heap_node);
-
       if (output_mode == 2 || output_mode == 3) {
         bubble_sort_and_linear_search_csv(
             current_values, heap_node, total_linear_duration_us,
@@ -324,16 +430,13 @@ LinkedList csv_reader(const Path_ID_Map &config, int output_mode,
       } else {
         all_execution_cycles[assigned_id]++;
       }
-
       delete heap_node;
     }
   } while (file.good()  ? true
            : file.eof() ? ([&]() { return false; })()
                         : false);
-
   file.close();
   all_ends[assigned_id] = steady_clock::now();
-
   if (output_mode == 1) {
     table_format(current_values, all_execution_cycles[assigned_id],
                  assigned_id);
@@ -345,6 +448,5 @@ LinkedList csv_reader(const Path_ID_Map &config, int output_mode,
     analyses(current_values, sub_selection, assigned_id);
     display_benchmarks(assigned_id);
   }
-
   return current_values;
 }
