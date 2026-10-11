@@ -51,6 +51,33 @@ void display_benchmarks(int assigned_id) {
   }
 }
 
+void table_format(const LinkedList &dataset, int record_count,
+                  int assigned_id) {
+  auto current_time = steady_clock::now();
+  auto parse_duration =
+      duration_cast<milliseconds>(current_time - all_starts[assigned_id]);
+
+  printf("Load Total Valid Records: %d\n", record_count);
+  printf("Processing Time: %ld ms\n\n", parse_duration.count());
+
+  printf("====================================================================="
+         "===============================\n");
+  printf("%-10s | %-4s | %-16s | %-12s | %-16s | %-18s |\n", "PatientID", "Age",
+         "CareType", "LengthOfStay", "BaseCostPerHour", "DaysVisitsPerYear");
+  printf("====================================================================="
+         "===============================\n");
+
+  Node *current = dataset.first_node;
+  while (current != nullptr) {
+    printf("%-10s | %-4d | %-16s | %-12d | %-16d | %-18d |\n",
+           current->patientID.c_str(), current->age, current->careType.c_str(),
+           current->lengthOfStay, current->baseCostPerHour,
+           current->daysVisitsPerYear);
+    current = current->next;
+  }
+  printf("\n");
+}
+
 inline steady_clock::time_point return_ends(int dataset_index) {
   return all_ends[dataset_index] = steady_clock::now();
 }
@@ -166,6 +193,8 @@ LinkedList csv_reader(const Path_ID_Map &config) {
                         : false);
 
   file.close();
+
+  table_format(current_values, execution_cycles, assigned_id);
   display_benchmarks(assigned_id);
 
   return current_values;
