@@ -40,6 +40,16 @@ int main()
         cin >> selection;
         cout << endl;
 
+        // validation
+        if (cin.fail())
+        {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Invalid input. Please enter a number." << endl;
+            selection = -1;
+            continue;
+        }
+
         switch (selection)
         {
         case 4:
@@ -49,7 +59,7 @@ int main()
             {
                 dataLoadingArray(dataset);
             }
-            
+
             int subChoice = 0;
             cout << "--- Age Group Analysis Sub-Menu ---" << endl;
             cout << "[1] Display ALL Age Categories Summary" << endl;
@@ -60,6 +70,16 @@ int main()
             cout << "[6] 61-100 (Seniors / Elderly)" << endl;
             cout << "Select Category (1-6): ";
             cin >> subChoice;
+
+            // validation
+            if (cin.fail())
+            {
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cout << "Invalid input. Returning to menu." << endl;
+                selection = -1;
+                continue;
+            }
 
             size_t memBefore = getMemoryUsage();
             auto start = chrono::high_resolution_clock::now();
@@ -115,27 +135,38 @@ int main()
 
             mergeSortByAge(sortedCopy);
 
-            printAllRecords(sortedCopy);
-
             auto end = chrono::high_resolution_clock::now();
             size_t memAfter = getMemoryUsage();
+
+            printAllRecords(sortedCopy);
+
             auto duration = chrono::duration_cast<chrono::milliseconds>(end - start);
 
             long long deltaBytes = static_cast<long long>(memAfter) - static_cast<long long>(memBefore);
 
-            
             cout << "Memory Gap: " << deltaBytes / 1024 << " KB\n"; // Output explicitly in KB
             cout << "Merge Sort (Age) execution time: " << duration.count() << " ms" << endl;
             cout << "Records before: " << dataset.size << " | after: " << sortedCopy.size << endl;
 
             cout << "Enter 2 to Search Data or any other number to Exit: " << endl;
             cin >> choice;
+
+            // validation
+            if (cin.fail())
+            {
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cout << "Invalid input. Returning to menu." << endl;
+                selection = -1;
+                continue;
+            }
+
             if (choice == 2)
             {
                 receiveResponse(sortedCopy);
             }
 
-            break;  
+            break;
         }
         case 2:
         {
@@ -150,20 +181,32 @@ int main()
             auto start = std::chrono::high_resolution_clock::now();
             size_t memBefore = getMemoryUsage();
             bubbleSortData = bubbleSort(dataset);
+            // calculate execution time end point;
+            auto end = chrono::high_resolution_clock::now();
             size_t memAfter = getMemoryUsage();
 
             printAllRecords(bubbleSortData);
-            // calculate execution time end point;
-            auto end = chrono::high_resolution_clock::now();
+
             // calculate duration between end&start;
             long long deltaBytes = static_cast<long long>(memAfter) - static_cast<long long>(memBefore);
             auto duration = chrono::duration<double, std::milli>(end - start);
-            
+
             cout << "Memory Gap: " << deltaBytes / 1024 << " KB\n";
             cout << "Bubble Sort (Age) execution time: " << duration.count() << " ms" << endl;
             cout << "Dataset Sorted!!!" << endl;
             cout << "Enter 2 to Search Data or any other number to Exit: " << endl;
             cin >> choice;
+
+            // validation
+            if (cin.fail())
+            {
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cout << "Invalid input. Returning to menu." << endl;
+                selection = -1;
+                continue;
+            }
+
             if (choice == 2)
             {
                 receiveResponse(bubbleSortData);
@@ -183,6 +226,17 @@ int main()
 
             cout << "Enter 2 to Search Data or any other number to Exit: " << endl;
             cin >> choice;
+
+            // validation
+            if (cin.fail())
+            {
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cout << "Invalid input. Returning to menu." << endl;
+                selection = -1;
+                continue;
+            }
+
             if (choice == 2)
             {
                 receiveResponse(dataset);

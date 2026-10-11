@@ -1,38 +1,44 @@
 #include <iostream>
 #include "bubbleSortAge.hpp"
 #include "searchArray.hpp"
-#include "general-tools/datasets-implementation-array.hpp"
+#include "../general-tools/datasets-implementation-array.hpp"
 #include <chrono>
 #include <string>
+#include <limits>
 
 using namespace std;
 using namespace std::chrono;
 
-    
-arrayDataset searchAge(const arrayDataset& arr, const string& x) {
-    arrayDataset results ;
+arrayDataset searchAge(const arrayDataset &arr, const string &x)
+{
+    arrayDataset results;
     results.clear();
-    
-    for (int i = 0; i < arr.size; i++) {
+
+    for (int i = 0; i < arr.size; i++)
+    {
         bool matches = false;
         matches = (arr.data[i].age == stoi(x));
         // If a match is found, append to the output dataset
-        if (matches) {
+        if (matches)
+        {
             results.data[results.size] = arr.data[i];
             results.size++;
         }
     }
 
-    return results;    
+    return results;
 }
 
-arrayDataset searchAgeGroup(const int& minV, const int& maxV,const arrayDataset& arr ){
-    arrayDataset results ;
+arrayDataset searchAgeGroup(const int &minV, const int &maxV, const arrayDataset &arr)
+{
+    arrayDataset results;
     results.clear();
 
-    for(int i = 0; i < arr.size ; i++){
+    for (int i = 0; i < arr.size; i++)
+    {
         int value = arr.data[i].age;
-        if( minV <= value && value <= maxV){
+        if (minV <= value && value <= maxV)
+        {
             results.data[results.size] = arr.data[i];
             results.size++;
         }
@@ -40,51 +46,93 @@ arrayDataset searchAgeGroup(const int& minV, const int& maxV,const arrayDataset&
     return results;
 }
 
-void receiveResponse(const arrayDataset& arr) {
-    string searchingTarget;
+void receiveResponse(const arrayDataset &arr)
+{
     arrayDataset result;
     int searching;
-
+    int targetAge;
     int minV;
     int maxV;
 
     cout << "Your are searching data based on Age" << endl;
     cout << "Enter 1 for searching by Age or 2 for searching by Age Group: ";
-    cin >> searchingTarget;
-    searching = stoi(searchingTarget);
-    if(searching == 1){
+    cin >> searching;
+
+    // validation
+    if (cin.fail())
+    {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Invalid input. Returning to menu." << endl;
+        return;
+    }
+
+    if (searching == 1)
+    {
         cout << "Give the Age to search: ";
-        cin >> searchingTarget;
+        cin >> targetAge;
+
+        // validation
+        if (cin.fail())
+        {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Invalid input. Returning to menu." << endl;
+            return;
+        }
+
         auto start = std::chrono::high_resolution_clock::now();
-        result = searchAge(arr, searchingTarget);
+        result = searchAge(arr, to_string(targetAge));
         auto end = std::chrono::high_resolution_clock::now();
+
         printAllRecords(result);
+
         auto duration = chrono::duration<double, std::milli>(end - start);
         double milliseconds = duration.count();
 
         cout << "Linear Search execution time: " << milliseconds << " ms" << endl;
     }
-    else if(searching == 2){
+    else if (searching == 2)
+    {
         cout << "Give the Age group (e.g. 20-40, 30-50) :" << endl;
         cout << "first Number :";
-        cin >> minV ;
+        cin >> minV;
+
+        // validation
+        if (cin.fail())
+        {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Invalid input. Returning to menu." << endl;
+            return;
+        }
+
         cout << "SecondNumber:";
         cin >> maxV;
 
+        // validation
+        if (cin.fail())
+        {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Invalid input. Returning to menu." << endl;
+            return;
+        }
+
         auto start = std::chrono::high_resolution_clock::now();
-        result = searchAgeGroup(minV,maxV,arr);
-        printAllRecords(result);
+        result = searchAgeGroup(minV, maxV, arr);
         auto end = std::chrono::high_resolution_clock::now();
+
+        printAllRecords(result);
+
         auto duration = chrono::duration<double, std::milli>(end - start);
         double milliseconds = duration.count();
-        
+
         cout << "Linear Search execution time: " << milliseconds << " ms" << endl;
     }
-    else {
+    else
+    {
         cout << "Invalid selection. Please enter 1 or 2." << endl;
         return;
-    } 
-}        
-
-
-
+    }
+}
