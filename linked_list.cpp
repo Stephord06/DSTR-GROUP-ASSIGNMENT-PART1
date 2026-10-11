@@ -64,18 +64,9 @@ struct LinkedList {
     if (!first_node) {
       return;
     }
-    Node *temp = first_node;
-    Node *after_temp = first_node;
-    while (temp->next) {
-      after_temp = temp->next;
-      if (!after_temp->next) {
-        free(after_temp);
-        temp->next = nullptr;
-        length -= 1;
-        return;
-      }
-      temp = temp->next;
-    }
+    free(get(length - 1));
+    get(length - 2)->next = nullptr;
+    length -= 1;
   }
 
   void display_all() {
