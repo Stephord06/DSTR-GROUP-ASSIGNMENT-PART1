@@ -96,7 +96,7 @@ void option1()
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         cout << "Invalid input. Returning to menu." << endl;
-        return; // Fixed: Changed 'continue;' to 'return;'
+        return; 
     }
 
     if (choice == 2)
@@ -137,7 +137,7 @@ void option2()
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         cout << "Invalid input. Returning to menu." << endl;
-        return; // Fixed: Changed 'continue;' to 'return;'
+        return; 
     }
 
     if (choice == 2)
@@ -181,7 +181,7 @@ void option3()
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         cout << "Invalid input. Returning to menu." << endl;
-        return; // Fixed: Changed 'continue;' to 'return;'
+        return; 
     }
 
     if (choice == 2)
@@ -214,7 +214,7 @@ void option4()
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         cout << "Invalid input. Returning to menu." << endl;
-        return; // Fixed: Changed 'continue;' to 'return;'
+        return; 
     }
 
     size_t memBefore = getMemoryUsage();
