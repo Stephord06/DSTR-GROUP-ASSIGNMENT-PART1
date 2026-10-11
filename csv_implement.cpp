@@ -36,16 +36,16 @@ Path_ID_Map retrieve_relative_path2() {
 }
 
 void display_benchmarks(int assigned_id) {
-  auto elapsed = duration_cast<microseconds>(all_ends[assigned_id] -
+  auto elapsed = duration_cast<milliseconds>(all_ends[assigned_id] -
                                              all_starts[assigned_id]);
-  printf("-> Dataset %d Bubble Sorting took: %ld us\n", assigned_id,
+  printf("-> Dataset %d Bubble Sorting took: %ld ms\n", assigned_id,
          elapsed.count());
   printf("  -> Total tracking operations run: %d\n",
          all_execution_cycles[assigned_id]);
-  printf("  -> Aggregated Linear Search duration: %lld us\n",
+  printf("  -> Aggregated Linear Search duration: %lld ms\n",
          all_linear_durations[assigned_id]);
   if (all_execution_cycles[assigned_id] > 0) {
-    printf("  -> Average latency per scanned data point: %f us\n\n",
+    printf("  -> Average latency per scanned data point: %f ms\n\n",
            (double)all_linear_durations[assigned_id] /
                all_execution_cycles[assigned_id]);
   }
@@ -70,7 +70,7 @@ benchmarking_calculations(int dataset_index,
                           long long &linear_duration, int &cycles) {
   auto loop_checkpoint_b = steady_clock::now();
   linear_duration +=
-      duration_cast<microseconds>(loop_checkpoint_b - loop_checkpoint_a)
+      duration_cast<milliseconds>(loop_checkpoint_b - loop_checkpoint_a)
           .count();
   cycles++;
 
@@ -171,9 +171,9 @@ LinkedList csv_reader(const Path_ID_Map &config) {
   return current_values;
 }
 
-/**int main() {
+int main() {
   LinkedList values_0 = csv_reader(retrieve_relative_path0());
   LinkedList values_1 = csv_reader(retrieve_relative_path1());
   LinkedList values_2 = csv_reader(retrieve_relative_path2());
   return 0;
-}**/
+}
