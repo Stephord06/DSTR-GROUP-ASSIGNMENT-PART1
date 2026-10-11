@@ -57,8 +57,9 @@ void receiveResponse(const arrayDataset& arr) {
         cin >> searchingTarget;
         auto start = std::chrono::high_resolution_clock::now();
         result = searchAge(arr, searchingTarget);
-        auto end = std::chrono::high_resolution_clock::now();
         printAllRecords(result);
+        auto end = std::chrono::high_resolution_clock::now();
+        
         auto duration = chrono::duration<double, std::milli>(end - start);
         double milliseconds = duration.count();
 
