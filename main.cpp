@@ -140,9 +140,8 @@ int main()
 
             printAllRecords(sortedCopy);
 
-            auto duration = chrono::duration_cast<chrono::milliseconds>(end - start);
-
             long long deltaBytes = static_cast<long long>(memAfter) - static_cast<long long>(memBefore);
+            auto duration = chrono::duration<double, std::milli>(end - start);
 
             cout << "Memory Gap: " << deltaBytes / 1024 << " KB\n"; // Output explicitly in KB
             cout << "Merge Sort (Age) execution time: " << duration.count() << " ms" << endl;
