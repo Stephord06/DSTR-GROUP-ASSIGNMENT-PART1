@@ -1,10 +1,8 @@
 #include "linked_list.cpp"
-#include <cerrno>
 #include <chrono>
-#include <cstring>
+#include <cstdio>
 #include <filesystem>
 #include <fstream>
-#include <iostream>
 
 using namespace std;
 using namespace std::filesystem;
@@ -15,11 +13,15 @@ struct Path_ID_Map {
   int assigned_id;
 };
 
-string csv_row_data;
 steady_clock::time_point all_starts[3];
 steady_clock::time_point all_ends[3];
 long long all_linear_durations[3];
 int all_execution_cycles[3];
+
+extern "C" {
+int atoi(const char *str);
+int printf(const char *format, ...);
+}
 
 Path_ID_Map retrieve_relative_path0() {
   return {path("datasets/dataset1 facility_a.csv"), 0};
@@ -36,17 +38,16 @@ Path_ID_Map retrieve_relative_path2() {
 void display_benchmarks(int assigned_id) {
   auto elapsed = duration_cast<microseconds>(all_ends[assigned_id] -
                                              all_starts[assigned_id]);
-  cout << "-> Dataset " << assigned_id
-       << " Bubble Sorting took: " << elapsed.count() << " us\n";
-  cout << "  -> Total tracking operations run: "
-       << all_execution_cycles[assigned_id] << "\n";
-  cout << "  -> Aggregated Linear Search duration: "
-       << all_linear_durations[assigned_id] << " us\n";
+  printf("-> Dataset %d Bubble Sorting took: %ld us\n", assigned_id,
+         elapsed.count());
+  printf("  -> Total tracking operations run: %d\n",
+         all_execution_cycles[assigned_id]);
+  printf("  -> Aggregated Linear Search duration: %lld us\n",
+         all_linear_durations[assigned_id]);
   if (all_execution_cycles[assigned_id] > 0) {
-    cout << "  -> Average latency per scanned data point: "
-         << (double)all_linear_durations[assigned_id] /
-                all_execution_cycles[assigned_id]
-         << " us\n\n";
+    printf("  -> Average latency per scanned data point: %f us\n\n",
+           (double)all_linear_durations[assigned_id] /
+               all_execution_cycles[assigned_id]);
   }
 }
 
@@ -83,7 +84,7 @@ inline void bubble_sort_and_linear_search_csv(LinkedList &current_values,
                                               long long &linear_duration,
                                               int &cycles, int dataset_index) {
   current_values.bubble_sort(AGE);
-  current_values.bubble_sort(BASE_COST_PER_HOUR);
+  current_values.bubble_sort(TOTAL_MEDICAL_COST);
 
   auto loop_checkpoint_a = steady_clock::now();
 
@@ -94,51 +95,62 @@ inline void bubble_sort_and_linear_search_csv(LinkedList &current_values,
 }
 
 LinkedList csv_reader(const Path_ID_Map &config) {
+  char csv_row_data[70];
   LinkedList current_values;
   const path &current_dataset = config.file_path;
   int assigned_id = config.assigned_id;
 
   ifstream file(current_dataset);
   if (!file.is_open()) {
-    cerr << "Error: This file cannot be opened due to '" << strerror(errno)
-         << "' Reason\n";
     return current_values;
   }
-  getline(file, csv_row_data);
+
+  file.getline(csv_row_data, sizeof(csv_row_data));
 
   all_starts[assigned_id] = steady_clock::now();
   long long total_linear_duration_us = 0;
   int execution_cycles = 0;
 
   do {
-    getline(file, csv_row_data);
-    if (file.good()) {
-      size_t start = 0;
-      size_t end = 0;
-      string fields[6];
+    file.getline(csv_row_data, sizeof(csv_row_data));
 
-      for (int j = 0; j < 6; j++) {
-        if (j == 5) {
-          fields[j] = csv_row_data.substr(start);
-          while (fields[j].length() > 0 &&
-                 (fields[j][fields[j].length() - 1] == '\r' ||
-                  fields[j][fields[j].length() - 1] == '\n')) {
-            fields[j].resize(fields[j].length() - 1);
-          }
-        } else {
-          end = csv_row_data.find(',', start);
-          fields[j] = csv_row_data.substr(start, end - start);
-          start = end + 1;
+    if (file.good()) {
+      char *p = csv_row_data;
+      char *fields[6] = {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+      int field_idx = 0;
+
+      fields[field_idx++] = p;
+
+      while (*p != '\0') {
+        if (*p == '\r' || *p == '\n') {
+          *p = '\0';
+          break;
         }
+        if (*p == '\t') {
+          *p = '\0';
+        }
+        if (*p == ',') {
+          *p = '\0';
+          if (field_idx < 6) {
+            fields[field_idx++] = p + 1;
+          }
+        }
+        p++;
+      }
+
+      if (fields[0] == nullptr || fields[1] == nullptr ||
+          fields[2] == nullptr || fields[3] == nullptr ||
+          fields[4] == nullptr || fields[5] == nullptr) {
+        continue;
       }
 
       Node *heap_node = new Node;
       heap_node->patientID = fields[0];
       heap_node->careType = fields[2];
-      heap_node->age = stoi(fields[1]);
-      heap_node->lengthOfStay = stoi(fields[3]);
-      heap_node->baseCostPerHour = stoi(fields[4]);
-      heap_node->daysVisitsPerYear = stoi(fields[5]);
+      heap_node->age = atoi(fields[1]);
+      heap_node->lengthOfStay = atoi(fields[3]);
+      heap_node->baseCostPerHour = atoi(fields[4]);
+      heap_node->daysVisitsPerYear = atoi(fields[5]);
       heap_node->next = nullptr;
 
       current_values.push(*heap_node);
@@ -152,18 +164,16 @@ LinkedList csv_reader(const Path_ID_Map &config) {
   } while (file.good()  ? true
            : file.eof() ? ([&]() { return false; })()
                         : false);
-  file.close();
 
+  file.close();
   display_benchmarks(assigned_id);
 
   return current_values;
 }
 
-/** int main() {
+/**int main() {
   LinkedList values_0 = csv_reader(retrieve_relative_path0());
   LinkedList values_1 = csv_reader(retrieve_relative_path1());
   LinkedList values_2 = csv_reader(retrieve_relative_path2());
-
   return 0;
-}**
-***/
+}**/
