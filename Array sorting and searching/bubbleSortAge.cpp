@@ -3,6 +3,8 @@
 #include <iostream>
 #include <iomanip>
  
+using namespace std;
+
 arrayDataset bubbleSort(arrayDataset& arr){
     int n = arr.size;
     bool swapped;
