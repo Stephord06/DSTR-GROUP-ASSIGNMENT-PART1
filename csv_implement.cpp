@@ -348,3 +348,57 @@ LinkedList csv_reader(const Path_ID_Map &config, int output_mode,
 
   return current_values;
 }
+
+int main() {
+  int selection;
+
+  while (true) {
+    printf("\nSingly Linked List Program Implementation\n");
+    printf("Functions Provided: \n");
+    printf("[1] Display all data unsorted with array\n");
+    printf("[2] Display all data sort by Age using Bubble Sort\n");
+    printf("[3] Display Age Group Medical Cost Analysis\n");
+    printf("[0] Exit the System\n");
+    printf("\nInsert a number to select a function to execute: ");
+
+    std::cin >> selection;
+    printf("\n");
+
+    if (selection == 0) {
+      printf("Exiting System...\n");
+      break;
+    }
+
+    for (int i = 0; i < 3; i++) {
+      all_execution_cycles[i] = 0;
+      all_linear_durations[i] = 0;
+      mem_before_calculations[i] = 0;
+      mem_after_calculations[i] = 0;
+    }
+
+    switch (selection) {
+    case 1: {
+      LinkedList value_0 = csv_reader(retrieve_relative_path0(), 1);
+      LinkedList value_1 = csv_reader(retrieve_relative_path1(), 1);
+      LinkedList value_2 = csv_reader(retrieve_relative_path2(), 1);
+      break;
+    }
+    case 2: {
+      LinkedList value_0 = csv_reader(retrieve_relative_path0(), 2);
+      LinkedList value_1 = csv_reader(retrieve_relative_path1(), 2);
+      LinkedList value_2 = csv_reader(retrieve_relative_path2(), 2);
+      break;
+    }
+    case 3: {
+      LinkedList value_0 = csv_reader(retrieve_relative_path0(), 3);
+      LinkedList value_1 = csv_reader(retrieve_relative_path1(), 3);
+      LinkedList value_2 = csv_reader(retrieve_relative_path2(), 3);
+      break;
+    }
+    default:
+      printf("Invalid Selection! Please try again.\n");
+      break;
+    }
+  }
+  return 0;
+}
