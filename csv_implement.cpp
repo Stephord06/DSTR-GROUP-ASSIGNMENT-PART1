@@ -1,20 +1,21 @@
-#include <psapi.h>
 #include <windows.h>
-
+// Windows Headers
+#include <psapi.h>
+// Windows Headers
 #include <chrono>
 #include <cstdio>
 #include <cstdlib>
-#include <filesystem>
+#include <cstring>
 #include <fstream>
+#include <string>
 
 #include "linked_list.cpp"
 
 using namespace std;
-using namespace std::filesystem;
 using namespace std::chrono;
 
 struct Path_ID_Map {
-  path file_path;
+  string file_path;
   int assigned_id;
 };
 
@@ -26,25 +27,17 @@ int all_execution_cycles[3];
 size_t mem_before_calculations[3] = {0, 0, 0};
 size_t mem_after_calculations[3] = {0, 0, 0};
 
-size_t getMemoryUsage() {
-  PROCESS_MEMORY_COUNTERS pmc;
-  if (GetProcessMemoryInfo(GetCurrentProcess(), &pmc, sizeof(pmc))) {
-    return pmc.PagefileUsage;
-  }
-  return 0;
-}
+size_t getMemoryUsage();
 
-Path_ID_Map retrieve_relative_path0() {
-  return {path("datasets/dataset1 facility_a.csv"), 0};
-}
+string filePath[3] = {"datasets/dataset1 facility_a.csv",
+                      "datasets/dataset2 facility_b.csv",
+                      "datasets/dataset3_facility_c.csv"};
 
-Path_ID_Map retrieve_relative_path1() {
-  return {path("datasets/dataset2 facility_b.csv"), 1};
-}
+Path_ID_Map retrieve_relative_path0() { return {filePath[0], 0}; }
 
-Path_ID_Map retrieve_relative_path2() {
-  return {path("datasets/dataset3_facility_c.csv"), 2};
-}
+Path_ID_Map retrieve_relative_path1() { return {filePath[1], 1}; }
+
+Path_ID_Map retrieve_relative_path2() { return {filePath[2], 2}; }
 
 inline steady_clock::time_point return_ends(int dataset_index) {
   return all_ends[dataset_index] = steady_clock::now();
@@ -276,7 +269,7 @@ void linear_search(LinkedList &value_0, LinkedList &value_1,
       table_format_2(search_res1, all_execution_cycles[1], 1);
       table_format_2(search_res2, all_execution_cycles[2], 2);
       auto searchDuration =
-          duration_cast<duration<double, std::milli>>(searchEnd - searchStart);
+          duration_cast<duration<double, milli>>(searchEnd - searchStart);
       long long searchDeltaBytes = static_cast<long long>(searchMemAfter) -
                                    static_cast<long long>(searchMemBefore);
       printf("==================================================\n");
@@ -339,7 +332,7 @@ void linear_search(LinkedList &value_0, LinkedList &value_1,
       table_format_2(search_res1, all_execution_cycles[1], 1);
       table_format_2(search_res2, all_execution_cycles[2], 2);
       auto searchDuration =
-          duration_cast<duration<double, std::milli>>(searchEnd - searchStart);
+          duration_cast<duration<double, milli>>(searchEnd - searchStart);
       long long searchDeltaBytes = static_cast<long long>(searchMemAfter) -
                                    static_cast<long long>(searchMemBefore);
       printf("==================================================\n");
@@ -377,7 +370,7 @@ LinkedList csv_reader(const Path_ID_Map &config, int output_mode,
                       int sub_selection) {
   char csv_row_data[70];
   LinkedList current_values;
-  const path &current_dataset = config.file_path;
+  const string &current_dataset = config.file_path;
   int assigned_id = config.assigned_id;
   ifstream file(current_dataset);
   if (!file.is_open()) {
@@ -437,16 +430,26 @@ LinkedList csv_reader(const Path_ID_Map &config, int output_mode,
                         : false);
   file.close();
   all_ends[assigned_id] = steady_clock::now();
-  if (output_mode == 1) {
+  switch (output_mode) {
+  case 1:
     table_format(current_values, all_execution_cycles[assigned_id],
                  assigned_id);
-  } else if (output_mode == 2) {
+    break;
+  case 2:
     table_format_2(current_values, all_execution_cycles[assigned_id],
                    assigned_id);
     display_benchmarks(assigned_id);
-  } else if (output_mode == 3) {
+    if (assigned_id == 2) {
+      linear_search(current_values, current_values, current_values);
+    }
+    break;
+  case 3:
     analyses(current_values, sub_selection, assigned_id);
     display_benchmarks(assigned_id);
+    if (assigned_id == 2) {
+      linear_search(current_values, current_values, current_values);
+    }
+    break;
   }
   return current_values;
 }
