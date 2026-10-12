@@ -42,9 +42,6 @@ int main() {
       cout << endl;
 
       switch (selection) {
-      case 4:
-        // to be implemented
-        break;
       case 3:
         // to be implemented
         break;
