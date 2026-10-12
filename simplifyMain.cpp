@@ -113,7 +113,7 @@ void option3(arrayDataset &dataset)
 
     printAllRecords(sortedCopy);
 
-    auto duration = chrono::duration_cast<chrono::milliseconds>(end - start);
+    auto duration = chrono::duration<double, std::milli>(end - start);
     long long deltaBytes = static_cast<long long>(memAfter) - static_cast<long long>(memBefore);
 
     cout << "Memory Usage: " << deltaBytes / 1024 << " KB\n";
