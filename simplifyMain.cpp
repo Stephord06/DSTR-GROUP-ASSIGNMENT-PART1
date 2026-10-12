@@ -1,7 +1,5 @@
 #include <windows.h>
-// Windows Headers
 #include <psapi.h>
-// Windows Headers
 #include "Array sorting and searching/bubbleSortAge.hpp"
 #include "Array sorting and searching/mergeSortAge.hpp"
 #include "Array sorting and searching/searchArray.hpp"
@@ -23,6 +21,21 @@ size_t getMemoryUsage()
     return 0;
 }
 
+bool isValidInput()
+{
+    if (cin.fail())
+    {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Invalid input. Please enter a number." << endl;
+        return false;
+    }
+
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cout << endl;
+    return true;
+}
+
 void option1(arrayDataset &dataset)
 {
     int choice;
@@ -34,11 +47,9 @@ void option1(arrayDataset &dataset)
     cout << "Enter 2 to Search Data or any other number to Exit: " << endl;
     cin >> choice;
 
-    if (cin.fail())
+    if (!isValidInput())
     {
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "Invalid input. Returning to menu." << endl;
+        cout << "Returning to menu." << endl;
         return;
     }
 
@@ -50,14 +61,11 @@ void option1(arrayDataset &dataset)
 
 void option2(arrayDataset &dataset)
 {
-
     int choice;
     arrayDataset bubbleSortData;
 
-    if (dataset.size == 0)
-    {
-        dataLoadingArray(dataset);
-    }
+    dataset.clear();
+    dataLoadingArray(dataset);
 
     auto start = std::chrono::high_resolution_clock::now();
     size_t memBefore = getMemoryUsage();
@@ -78,11 +86,9 @@ void option2(arrayDataset &dataset)
     cout << "Enter 2 to Search Data or any other number to Exit: " << endl;
     cin >> choice;
 
-    if (cin.fail())
+    if (!isValidInput())
     {
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "Invalid input. Returning to menu." << endl;
+        cout << "Returning to menu." << endl;
         return;
     }
 
@@ -94,7 +100,6 @@ void option2(arrayDataset &dataset)
 
 void option3(arrayDataset &dataset)
 {
-
     int choice;
 
     if (dataset.size == 0)
@@ -128,11 +133,9 @@ void option3(arrayDataset &dataset)
     cout << "Enter 2 to Search Data or any other number to Exit: " << endl;
     cin >> choice;
 
-    if (cin.fail())
+    if (!isValidInput())
     {
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "Invalid input. Returning to menu." << endl;
+        cout << "Returning to menu." << endl;
         return;
     }
 
@@ -144,29 +147,34 @@ void option3(arrayDataset &dataset)
 
 void option4(arrayDataset &dataset)
 {
-
-    if (dataset.size == 0)
-    {
-        dataLoadingArray(dataset);
-    }
+    dataset.clear();
+    dataLoadingArray(dataset);
 
     int subChoice = 0;
-    cout << "--- Age Group Analysis Sub-Menu ---" << endl;
-    cout << "[1] Display ALL Age Categories Summary" << endl;
-    cout << "[2] 0-17 (Children & Adolescents)" << endl;
-    cout << "[3] 18-25 (Young Adults / University Students)" << endl;
-    cout << "[4] 26-40 (Adults)" << endl;
-    cout << "[5] 41-60 (Middle-Aged Adults)" << endl;
-    cout << "[6] 61-100 (Seniors / Elderly)" << endl;
-    cout << "Select Category (1-6): ";
-    cin >> subChoice;
-
-    if (cin.fail())
+    while (true)
     {
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "Invalid input. Returning to menu." << endl;
-        return;
+        cout << "--- Age Group Analysis Sub-Menu ---" << endl;
+        cout << "[1] Display ALL Age Categories Summary" << endl;
+        cout << "[2] 0-17 (Children & Adolescents)" << endl;
+        cout << "[3] 18-25 (Young Adults / University Students)" << endl;
+        cout << "[4] 26-40 (Adults)" << endl;
+        cout << "[5] 41-60 (Middle-Aged Adults)" << endl;
+        cout << "[6] 61-100 (Seniors / Elderly)" << endl;
+        cout << "Select Category (1-6): ";
+        cin >> subChoice;
+
+        if (!isValidInput())
+        {
+            continue;
+        }
+
+        if (subChoice < 1 || subChoice > 6)
+        {
+            cout << "[!] Invalid category selected. Please enter 1 to 6." << endl;
+            continue;
+        }
+
+        break;
     }
 
     size_t memBefore = getMemoryUsage();
@@ -191,9 +199,6 @@ void option4(arrayDataset &dataset)
         break;
     case 6:
         analyzeAgeGroup(dataset, 61, 100, "Seniors / Elderly");
-        break;
-    default:
-        cout << "[!] Invalid category selected." << endl;
         break;
     }
 

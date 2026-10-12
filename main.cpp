@@ -21,15 +21,17 @@ int main()
             cout << "Your selection: ";
             cin >> selection;
 
-            if (cin.fail() || (selection < 0 || selection > 2))
+            if (!isValidInput())
             {
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                continue;
+            }
+
+            if (selection < 0 || selection > 2)
+            {
                 cout << "Invalid input. Please enter 0, 1, or 2." << endl;
                 continue;
             }
 
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             break;
         }
 
@@ -50,16 +52,10 @@ int main()
                 cout << "\nInsert a number: ";
                 cin >> subSelection;
 
-                if (cin.fail())
+                if (!isValidInput())
                 {
-                    cin.clear();
-                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                    cout << "Invalid input. Please enter a number." << endl;
                     continue;
                 }
-
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cout << endl;
 
                 switch (subSelection)
                 {
@@ -105,16 +101,10 @@ int main()
                 cout << "\nInsert a number: ";
                 cin >> subSelection;
 
-                if (cin.fail())
+                if (!isValidInput())
                 {
-                    cin.clear();
-                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                    cout << "Invalid input. Please enter a number." << endl;
                     continue;
                 }
-
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cout << endl;
 
                 switch (subSelection)
                 {
