@@ -1,3 +1,4 @@
+#include "csv_implement.cpp"
 #include "simplifyMain.cpp"
 #include <iostream>
 #include <limits>
@@ -12,7 +13,6 @@ int main() {
     cout << "\nChoose Between Two Implementations" << endl;
     cout << "[1] Linked List Implementation" << endl;
     cout << "[2] Array List Implementation" << endl;
-    cout << "\nInsert a number: ";
     cin >> selection;
     // validation
     if (cin.fail()) {
@@ -32,7 +32,6 @@ int main() {
       cout << "[0] Exit the System" << endl;
       cout << "\nInsert a number: ";
       cin >> selection;
-      // validation
       if (cin.fail()) {
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -44,13 +43,19 @@ int main() {
 
       switch (selection) {
       case 3:
-        // to be implemented
+        csv_reader(retrieve_relative_path0(), 3, 1);
+        csv_reader(retrieve_relative_path1(), 3, 1);
+        csv_reader(retrieve_relative_path2(), 3, 1);
         break;
       case 2:
-        // to be implemented
+        csv_reader(retrieve_relative_path0(), 2, 1);
+        csv_reader(retrieve_relative_path1(), 2, 1);
+        csv_reader(retrieve_relative_path2(), 2, 1);
         break;
       case 1:
-        // to be implemented
+        csv_reader(retrieve_relative_path0(), 1, 1);
+        csv_reader(retrieve_relative_path1(), 1, 1);
+        csv_reader(retrieve_relative_path2(), 1, 1);
         break;
       case 0:
         cout << "Bye Bye" << endl;

@@ -1,13 +1,13 @@
-#include "general-tools/datasets-implementation-array.hpp"
 #include "Array sorting and searching/bubbleSortAge.hpp"
-#include "Array sorting and searching/searchArray.hpp"
 #include "Array sorting and searching/mergeSortAge.hpp"
+#include "Array sorting and searching/searchArray.hpp"
 #include "analysis.hpp"
-#include <iostream>
+#include "general-tools/datasets-implementation-array.hpp"
 #include <chrono>
-#include <windows.h>
+#include <iostream>
+#include <limits>
 #include <psapi.h>
-#include <limits> 
+#include <windows.h>
 
 using namespace std;
 
@@ -19,189 +19,175 @@ size_t getMemoryUsage() {
   return 0;
 }
 
-void option1(arrayDataset &dataset)
-{
-    int choice;
-    
+void option1(arrayDataset &dataset) {
+  int choice;
 
-    dataset.clear();
+  dataset.clear();
+  dataLoadingArray(dataset);
+  printAllRecords(dataset);
+
+  cout << "Enter 2 to Search Data or any other number to Exit: " << endl;
+  cin >> choice;
+
+  if (cin.fail()) {
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cout << "Invalid input. Returning to menu." << endl;
+    return;
+  }
+
+  if (choice == 2) {
+    receiveResponse(dataset);
+  }
+}
+
+void option2(arrayDataset &dataset) {
+
+  int choice;
+  dataset.clear();
+  arrayDataset bubbleSortData;
+
+  if (dataset.size == 0) {
     dataLoadingArray(dataset);
-    printAllRecords(dataset);
+  }
 
-    cout << "Enter 2 to Search Data or any other number to Exit: " << endl;
-    cin >> choice;
+  auto start = std::chrono::high_resolution_clock::now();
+  size_t memBefore = getMemoryUsage();
+  bubbleSortData = bubbleSort(dataset);
+  auto end = chrono::high_resolution_clock::now();
+  size_t memAfter = getMemoryUsage();
 
-    if (cin.fail())
-    {
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "Invalid input. Returning to menu." << endl;
-        return; 
-    }
+  printAllRecords(bubbleSortData);
 
-    if (choice == 2)
-    {
-        receiveResponse(dataset);
-    }
+  long long deltaBytes =
+      static_cast<long long>(memAfter) - static_cast<long long>(memBefore);
+  auto duration = chrono::duration<double, std::milli>(end - start);
+
+  cout << "Memory Usage: " << deltaBytes / 1024 << " KB\n";
+  cout << "Bubble Sort (Age) execution time: " << duration.count() << " ms"
+       << endl;
+  cout << "Dataset Sorted!!!" << endl;
+  cout << "Enter 2 to Search Data or any other number to Exit: " << endl;
+  cin >> choice;
+
+  if (cin.fail()) {
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cout << "Invalid input. Returning to menu." << endl;
+    return;
+  }
+
+  if (choice == 2) {
+    receiveResponse(bubbleSortData);
+  }
 }
 
-void option2(arrayDataset &dataset)
-{
-    
+void option3(arrayDataset &dataset) {
 
-    int choice;
-    dataset.clear();
-    arrayDataset bubbleSortData;
+  int choice;
 
-    if (dataset.size == 0)
-    {
-        dataLoadingArray(dataset);
-    }
+  if (dataset.size == 0) {
+    dataLoadingArray(dataset);
+  }
 
-    auto start = std::chrono::high_resolution_clock::now();
-    size_t memBefore = getMemoryUsage();
-    bubbleSortData = bubbleSort(dataset);
-    auto end = chrono::high_resolution_clock::now();
-    size_t memAfter = getMemoryUsage();
+  arrayDataset sortedCopy;
+  copyDataset(dataset, sortedCopy);
 
-    printAllRecords(bubbleSortData);
+  size_t memBefore = getMemoryUsage();
+  auto start = chrono::high_resolution_clock::now();
 
-    long long deltaBytes = static_cast<long long>(memAfter) - static_cast<long long>(memBefore);
-    auto duration = chrono::duration<double, std::milli>(end - start);
+  mergeSortByAge(sortedCopy);
 
-    cout << "Memory Usage: " << deltaBytes / 1024 << " KB\n";
-    cout << "Bubble Sort (Age) execution time: " << duration.count() << " ms" << endl;
-    cout << "Dataset Sorted!!!" << endl;
-    cout << "Enter 2 to Search Data or any other number to Exit: " << endl;
-    cin >> choice;
+  auto end = chrono::high_resolution_clock::now();
+  size_t memAfter = getMemoryUsage();
 
-    if (cin.fail())
-    {
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "Invalid input. Returning to menu." << endl;
-        return; 
-    }
+  printAllRecords(sortedCopy);
 
-    if (choice == 2)
-    {
-        receiveResponse(bubbleSortData);
-    }
+  auto duration = chrono::duration<double, std::milli>(end - start);
+  long long deltaBytes =
+      static_cast<long long>(memAfter) - static_cast<long long>(memBefore);
+
+  cout << "Memory Usage: " << deltaBytes / 1024 << " KB\n";
+  cout << "Merge Sort (Age) execution time: " << duration.count() << " ms"
+       << endl;
+  cout << "Records before: " << dataset.size << " | after: " << sortedCopy.size
+       << endl;
+
+  cout << "Enter 2 to Search Data or any other number to Exit: " << endl;
+  cin >> choice;
+
+  if (cin.fail()) {
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cout << "Invalid input. Returning to menu." << endl;
+    return;
+  }
+
+  if (choice == 2) {
+    receiveResponse(sortedCopy);
+  }
 }
 
-void option3(arrayDataset &dataset)
-{
-    
+void option4(arrayDataset &dataset) {
+  int choice;
 
-    int choice;
+  dataset.clear();
+  if (dataset.size == 0) {
+    dataLoadingArray(dataset);
+  }
 
-    if (dataset.size == 0)
-    {
-        dataLoadingArray(dataset);
-    }
+  int subChoice = 0;
+  cout << "--- Age Group Analysis Sub-Menu ---" << endl;
+  cout << "[1] Display ALL Age Categories Summary" << endl;
+  cout << "[2] 0-17 (Children & Adolescents)" << endl;
+  cout << "[3] 18-25 (Young Adults / University Students)" << endl;
+  cout << "[4] 26-40 (Adults)" << endl;
+  cout << "[5] 41-60 (Middle-Aged Adults)" << endl;
+  cout << "[6] 61-100 (Seniors / Elderly)" << endl;
+  cout << "Select Category (1-6): ";
+  cin >> subChoice;
 
-    arrayDataset sortedCopy;
-    copyDataset(dataset, sortedCopy);
+  if (cin.fail()) {
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cout << "Invalid input. Returning to menu." << endl;
+    return;
+  }
 
-    size_t memBefore = getMemoryUsage();
-    auto start = chrono::high_resolution_clock::now();
+  size_t memBefore = getMemoryUsage();
+  auto start = chrono::high_resolution_clock::now();
 
-    mergeSortByAge(sortedCopy);
+  switch (subChoice) {
+  case 1:
+    analyzeAllAgeGroups(dataset);
+    break;
+  case 2:
+    analyzeAgeGroup(dataset, 0, 17, "Children & Adolescents");
+    break;
+  case 3:
+    analyzeAgeGroup(dataset, 18, 25, "Young Adults / University Students");
+    break;
+  case 4:
+    analyzeAgeGroup(dataset, 26, 40, "Adults");
+    break;
+  case 5:
+    analyzeAgeGroup(dataset, 41, 60, "Middle-Aged Adults");
+    break;
+  case 6:
+    analyzeAgeGroup(dataset, 61, 100, "Seniors / Elderly");
+    break;
+  default:
+    cout << "[!] Invalid category selected." << endl;
+    break;
+  }
 
-    auto end = chrono::high_resolution_clock::now();
-    size_t memAfter = getMemoryUsage();
+  auto end = chrono::high_resolution_clock::now();
+  size_t memAfter = getMemoryUsage();
 
-    printAllRecords(sortedCopy);
+  auto duration = chrono::duration<double, std::milli>(end - start);
+  long long deltaBytes =
+      static_cast<long long>(memAfter) - static_cast<long long>(memBefore);
 
-    auto duration = chrono::duration<double, std::milli>(end - start);
-    long long deltaBytes = static_cast<long long>(memAfter) - static_cast<long long>(memBefore);
-
-    cout << "Memory Usage: " << deltaBytes / 1024 << " KB\n";
-    cout << "Merge Sort (Age) execution time: " << duration.count() << " ms" << endl;
-    cout << "Records before: " << dataset.size << " | after: " << sortedCopy.size << endl;
-
-    cout << "Enter 2 to Search Data or any other number to Exit: " << endl;
-    cin >> choice;
-
-    if (cin.fail())
-    {
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "Invalid input. Returning to menu." << endl;
-        return; 
-    }
-
-    if (choice == 2)
-    {
-        receiveResponse(sortedCopy);
-    }
-}
-
-void option4(arrayDataset &dataset)
-{
-    int choice;
-    
-
-
-    dataset.clear();
-    if (dataset.size == 0)
-    {
-        dataLoadingArray(dataset);
-    }
-
-    int subChoice = 0;
-    cout << "--- Age Group Analysis Sub-Menu ---" << endl;
-    cout << "[1] Display ALL Age Categories Summary" << endl;
-    cout << "[2] 0-17 (Children & Adolescents)" << endl;
-    cout << "[3] 18-25 (Young Adults / University Students)" << endl;
-    cout << "[4] 26-40 (Adults)" << endl;
-    cout << "[5] 41-60 (Middle-Aged Adults)" << endl;
-    cout << "[6] 61-100 (Seniors / Elderly)" << endl;
-    cout << "Select Category (1-6): ";
-    cin >> subChoice;
-
-    if (cin.fail())
-    {
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "Invalid input. Returning to menu." << endl;
-        return; 
-    }
-
-    size_t memBefore = getMemoryUsage();
-    auto start = chrono::high_resolution_clock::now();
-
-    switch (subChoice)
-    {
-    case 1:
-        analyzeAllAgeGroups(dataset);
-        break;
-    case 2:
-        analyzeAgeGroup(dataset, 0, 17, "Children & Adolescents");
-        break;
-    case 3:
-        analyzeAgeGroup(dataset, 18, 25, "Young Adults / University Students");
-        break;
-    case 4:
-        analyzeAgeGroup(dataset, 26, 40, "Adults");
-        break;
-    case 5:
-        analyzeAgeGroup(dataset, 41, 60, "Middle-Aged Adults");
-        break;
-    case 6:
-        analyzeAgeGroup(dataset, 61, 100, "Seniors / Elderly");
-        break;
-    default:
-        cout << "[!] Invalid category selected." << endl;
-        break;
-    }
-
-    auto end = chrono::high_resolution_clock::now();
-    size_t memAfter = getMemoryUsage();
-
-    auto duration = chrono::duration<double, std::milli>(end - start);
-    long long deltaBytes = static_cast<long long>(memAfter) - static_cast<long long>(memBefore);
-
-    cout << "\nMemory Usage: " << deltaBytes / 1024 << " KB\n";
-    cout << "Analysis Execution Time: " << duration.count() << " ms" << endl;
+  cout << "\nMemory Usage: " << deltaBytes / 1024 << " KB\n";
+  cout << "Analysis Execution Time: " << duration.count() << " ms" << endl;
 }

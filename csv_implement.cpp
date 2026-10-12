@@ -1,11 +1,10 @@
-#include <psapi.h>
-#include <windows.h>
-
 #include <chrono>
 #include <cstdio>
 #include <cstdlib>
 #include <filesystem>
 #include <fstream>
+#include <psapi.h>
+#include <windows.h>
 
 #include "linked_list.cpp"
 
@@ -26,13 +25,7 @@ int all_execution_cycles[3];
 size_t mem_before_calculations[3] = {0, 0, 0};
 size_t mem_after_calculations[3] = {0, 0, 0};
 
-size_t getMemoryUsage() {
-  PROCESS_MEMORY_COUNTERS pmc;
-  if (GetProcessMemoryInfo(GetCurrentProcess(), &pmc, sizeof(pmc))) {
-    return pmc.PagefileUsage;
-  }
-  return 0;
-}
+size_t getMemoryUsage();
 
 Path_ID_Map retrieve_relative_path0() {
   return {path("datasets/dataset1 facility_a.csv"), 0};
@@ -437,16 +430,28 @@ LinkedList csv_reader(const Path_ID_Map &config, int output_mode,
                         : false);
   file.close();
   all_ends[assigned_id] = steady_clock::now();
-  if (output_mode == 1) {
+  switch (output_mode) {
+  case 1:
     table_format(current_values, all_execution_cycles[assigned_id],
                  assigned_id);
-  } else if (output_mode == 2) {
+    break;
+
+  case 2:
     table_format_2(current_values, all_execution_cycles[assigned_id],
                    assigned_id);
     display_benchmarks(assigned_id);
-  } else if (output_mode == 3) {
+    if (assigned_id == 2) {
+      linear_search(current_values, current_values, current_values);
+    }
+    break;
+
+  case 3:
     analyses(current_values, sub_selection, assigned_id);
     display_benchmarks(assigned_id);
+    if (assigned_id == 2) {
+      linear_search(current_values, current_values, current_values);
+    }
+    break;
   }
   return current_values;
 }
