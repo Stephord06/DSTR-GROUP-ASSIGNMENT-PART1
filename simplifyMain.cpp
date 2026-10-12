@@ -1,4 +1,3 @@
-// Windows Headers
 #include <windows.h>
 // Windows Headers
 #include <psapi.h>
