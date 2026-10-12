@@ -14,7 +14,7 @@ using namespace std;
 size_t getMemoryUsage() {
   PROCESS_MEMORY_COUNTERS pmc;
   if (GetProcessMemoryInfo(GetCurrentProcess(), &pmc, sizeof(pmc))) {
-    return pmc.PagefileUsage;
+    return pmc.PeakPagefileUsage;
   }
   return 0;
 }
