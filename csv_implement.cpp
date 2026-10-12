@@ -374,6 +374,9 @@ LinkedList csv_reader(const Path_ID_Map &config, int output_mode,
   long long total_linear_duration_us = 0;
   do {
     file.getline(csv_row_data, sizeof(csv_row_data));
+    if (!file) {
+      break;
+    }
     if (file.good()) {
       char *p = csv_row_data;
       char *fields[6] = {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
