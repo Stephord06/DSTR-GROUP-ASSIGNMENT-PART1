@@ -269,7 +269,7 @@ void linear_search(LinkedList &value_0, LinkedList &value_1,
       table_format_2(search_res1, all_execution_cycles[1], 1);
       table_format_2(search_res2, all_execution_cycles[2], 2);
       auto searchDuration =
-          duration_cast<duration<double, std::milli>>(searchEnd - searchStart);
+          duration_cast<duration<double, milli>>(searchEnd - searchStart);
       long long searchDeltaBytes = static_cast<long long>(searchMemAfter) -
                                    static_cast<long long>(searchMemBefore);
       printf("==================================================\n");
@@ -332,7 +332,7 @@ void linear_search(LinkedList &value_0, LinkedList &value_1,
       table_format_2(search_res1, all_execution_cycles[1], 1);
       table_format_2(search_res2, all_execution_cycles[2], 2);
       auto searchDuration =
-          duration_cast<duration<double, std::milli>>(searchEnd - searchStart);
+          duration_cast<duration<double, milli>>(searchEnd - searchStart);
       long long searchDeltaBytes = static_cast<long long>(searchMemAfter) -
                                    static_cast<long long>(searchMemBefore);
       printf("==================================================\n");
@@ -370,7 +370,7 @@ LinkedList csv_reader(const Path_ID_Map &config, int output_mode,
                       int sub_selection) {
   char csv_row_data[70];
   LinkedList current_values;
-  const path &current_dataset = config.file_path;
+  const string &current_dataset = config.file_path;
   int assigned_id = config.assigned_id;
   ifstream file(current_dataset);
   if (!file.is_open()) {
@@ -435,7 +435,6 @@ LinkedList csv_reader(const Path_ID_Map &config, int output_mode,
     table_format(current_values, all_execution_cycles[assigned_id],
                  assigned_id);
     break;
-
   case 2:
     table_format_2(current_values, all_execution_cycles[assigned_id],
                    assigned_id);
@@ -444,7 +443,6 @@ LinkedList csv_reader(const Path_ID_Map &config, int output_mode,
       linear_search(current_values, current_values, current_values);
     }
     break;
-
   case 3:
     analyses(current_values, sub_selection, assigned_id);
     display_benchmarks(assigned_id);
