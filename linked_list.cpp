@@ -1,5 +1,5 @@
 #include <cstdlib>
-#include <format>
+// #include <format>
 #include <iostream>
 #include <stdexcept>
 #include <string>
@@ -20,13 +20,13 @@ struct Node {
 
   Node *next;
 
-  string display() {
-    return format(
-        "[Care type={}, ID={}, Age={}, Length of stay={}, Base cost "
-        "per hour={}, Days visits per year={}, Total medical cost={}]",
-        careType, patientID, age, lengthOfStay, baseCostPerHour,
-        daysVisitsPerYear, get_total_medical_cost());
-  }
+  // string display() {
+  //   return format(
+  //       "[Care type={}, ID={}, Age={}, Length of stay={}, Base cost "
+  //       "per hour={}, Days visits per year={}, Total medical cost={}]",
+  //       careType, patientID, age, lengthOfStay, baseCostPerHour,
+  //       daysVisitsPerYear, get_total_medical_cost());
+  // }
   int get_total_medical_cost() {
     return (baseCostPerHour * lengthOfStay) * daysVisitsPerYear;
   };
@@ -69,15 +69,15 @@ struct LinkedList {
     length -= 1;
   }
 
-  void display_all() {
-    Node *temp = first_node;
-    while (temp) {
-      cout << temp->display() << " ";
-      temp = temp->next;
-    }
-    cout << endl;
-  }
-
+  // void display_all() {
+  //   Node *temp = first_node;
+  //   while (temp) {
+  //     cout << temp->display() << " ";
+  //     temp = temp->next;
+  //   }
+  //   cout << endl;
+  // }
+  //
   Node *get(int i) {
     if (i >= length || i < 0) {
       return nullptr;
@@ -283,3 +283,16 @@ struct LinkedList {
   }
 };
 
+// int main(int argc, char *argv[]) {
+//   Node node1 = Node{"34234", "patient", 23, 4, 56, 3};
+//   Node node2 = Node{"6452", "aadadw", 63, 4, 56, 3};
+//   Node node3 = Node{"7453", "gdrg", 53, 6, 29, 2};
+//   LinkedList *fef = new LinkedList;
+//   fef->push(node1);
+//   fef->push(node2);
+//   fef->push(node3);
+//   // fef->pop();
+//   fef->display_all();
+//
+//   return 0;
+// }
