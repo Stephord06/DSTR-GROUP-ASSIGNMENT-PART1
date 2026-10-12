@@ -80,13 +80,6 @@ void display_benchmarks(int assigned_id) {
          elapsed.count());
   printf("  -> Total tracking operations run: %d\n",
          all_execution_cycles[assigned_id]);
-  printf("  -> Aggregated Linear Search duration: %lld ms\n",
-         all_linear_durations[assigned_id]);
-  if (all_execution_cycles[assigned_id] > 0) {
-    printf("  -> Average latency per scanned data point: %f ms\n",
-           (double)all_linear_durations[assigned_id] /
-               all_execution_cycles[assigned_id]);
-  }
 
   long long deltaBytes =
       static_cast<long long>(mem_after_calculations[assigned_id]) -
@@ -240,7 +233,7 @@ void linear_search(LinkedList &value_0, LinkedList &value_1,
   if (post_sort_choice == 2) {
     int search_type = 0;
     printf("Searching data based on Age across all datasets\n");
-    printf("Enter 1 for precise Age match or 2 for an Age Group window: ");
+    printf("Enter 1 for Exact Age or 2 for an Age Group window: ");
     if (scanf("%d", &search_type) != 1) {
       while (getchar() != '\n')
         ;
