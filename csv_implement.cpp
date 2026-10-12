@@ -434,6 +434,9 @@ LinkedList csv_reader(const Path_ID_Map &config, int output_mode,
   case 1:
     table_format(current_values, all_execution_cycles[assigned_id],
                  assigned_id);
+    if (assigned_id == 2) {
+      linear_search(current_values, current_values, current_values);
+    }
     break;
   case 2:
     table_format_2(current_values, all_execution_cycles[assigned_id],
