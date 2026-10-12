@@ -1,19 +1,22 @@
+// Windows Headers
+#include <windows.h>
+// Windows Headers
+#include <psapi.h>
+// Windows Headers
 #include <chrono>
 #include <cstdio>
 #include <cstdlib>
-#include <filesystem>
+#include <cstring>
 #include <fstream>
-#include <psapi.h>
-#include <windows.h>
+#include <string>
 
 #include "linked_list.cpp"
 
 using namespace std;
-using namespace std::filesystem;
 using namespace std::chrono;
 
 struct Path_ID_Map {
-  path file_path;
+  string file_path;
   int assigned_id;
 };
 
@@ -27,17 +30,15 @@ size_t mem_after_calculations[3] = {0, 0, 0};
 
 size_t getMemoryUsage();
 
-Path_ID_Map retrieve_relative_path0() {
-  return {path("datasets/dataset1 facility_a.csv"), 0};
-}
+string filePath[3] = {"datasets/dataset1 facility_a.csv",
+                      "datasets/dataset2 facility_b.csv",
+                      "datasets/dataset3_facility_c.csv"};
 
-Path_ID_Map retrieve_relative_path1() {
-  return {path("datasets/dataset2 facility_b.csv"), 1};
-}
+Path_ID_Map retrieve_relative_path0() { return {filePath[0], 0}; }
 
-Path_ID_Map retrieve_relative_path2() {
-  return {path("datasets/dataset3_facility_c.csv"), 2};
-}
+Path_ID_Map retrieve_relative_path1() { return {filePath[1], 1}; }
+
+Path_ID_Map retrieve_relative_path2() { return {filePath[2], 2}; }
 
 inline steady_clock::time_point return_ends(int dataset_index) {
   return all_ends[dataset_index] = steady_clock::now();

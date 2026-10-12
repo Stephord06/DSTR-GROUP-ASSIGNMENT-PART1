@@ -1,3 +1,8 @@
+// Windows Headers
+#include <windows.h>
+// Windows Headers
+#include <psapi.h>
+// Windows Headers
 #include "Array sorting and searching/bubbleSortAge.hpp"
 #include "Array sorting and searching/mergeSortAge.hpp"
 #include "Array sorting and searching/searchArray.hpp"
@@ -6,8 +11,6 @@
 #include <chrono>
 #include <iostream>
 #include <limits>
-#include <psapi.h>
-#include <windows.h>
 
 using namespace std;
 
