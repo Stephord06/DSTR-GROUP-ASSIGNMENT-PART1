@@ -12,6 +12,7 @@ int main() {
     cout << "\nChoose Between Two Implementations" << endl;
     cout << "[1] Linked List Implementation" << endl;
     cout << "[2] Array List Implementation" << endl;
+    cout << "\nInsert a number: ";
     cin >> selection;
     // validation
     if (cin.fail()) {
